@@ -255,29 +255,97 @@
       d.append(formatar(texto));
     }
 
-    const VELOCIDADES_AUDIO = [[1.5, "1,5x"], [2, "2x"]];
+    const VELOCIDADES_AUDIO = [[1.5, "1,5×"], [2, "2×"]];
+    const BARRAS_AUDIO = 34;
 
-    // Botões de velocidade do áudio; 1,5x vem ativado por padrão.
-    function criarBotoesVelocidade(audio) {
-      const caixa = document.createElement("div");
-      caixa.className = "fc-vel";
-      let atual = VELOCIDADES_AUDIO[0][0];
-      const botoes = VELOCIDADES_AUDIO.map(([valor, rotulo]) => {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.textContent = rotulo;
-        b.onclick = () => { atual = valor; aplicar(); };
-        caixa.append(b);
-        return { b, valor };
+    function formatarTempo(s) {
+      if (!isFinite(s) || s < 0) s = 0;
+      return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0");
+    }
+
+    // Alturas fixas das barras (parecem ondas de voz), sempre iguais para o mesmo áudio.
+    function alturasDasBarras(semente) {
+      let x = 0;
+      for (const c of semente) x = (x * 31 + c.charCodeAt(0)) >>> 0;
+      return Array.from({ length: BARRAS_AUDIO }, () => {
+        x = (x * 1664525 + 1013904223) >>> 0;
+        return 20 + Math.round((x / 4294967296) * 80);
       });
-      function aplicar() {
-        audio.playbackRate = atual;
-        botoes.forEach(({ b, valor }) => b.classList.toggle("fc-vel-ativa", valor === atual));
+    }
+
+    // Player de áudio igual ao do WhatsApp: velocidade, play, ondas e tempo. 1,5× é o padrão.
+    function criarPlayerAudio(link) {
+      const audio = document.createElement("audio");
+      audio.preload = "metadata";
+      audio.src = link;
+
+      const raiz = document.createElement("div");
+      raiz.className = "fc-audio";
+
+      const vel = document.createElement("button");
+      vel.type = "button";
+      vel.className = "fc-vel";
+      vel.setAttribute("aria-label", "Velocidade do áudio");
+      let indice = 0;
+
+      const play = document.createElement("button");
+      play.type = "button";
+      play.className = "fc-play";
+      play.setAttribute("aria-label", "Tocar");
+
+      const ondas = document.createElement("div");
+      ondas.className = "fc-ondas";
+      const barras = alturasDasBarras(link).map((h) => {
+        const b = document.createElement("i");
+        b.style.height = h + "%";
+        ondas.append(b);
+        return b;
+      });
+      const bolinha = document.createElement("span");
+      bolinha.className = "fc-bolinha";
+      ondas.append(bolinha);
+
+      const tempo = document.createElement("div");
+      tempo.className = "fc-tempo";
+
+      const meio = document.createElement("div");
+      meio.className = "fc-meio";
+      meio.append(ondas, tempo);
+      raiz.append(vel, play, meio, audio);
+
+      function aplicarVelocidade() {
+        audio.playbackRate = VELOCIDADES_AUDIO[indice][0];
+        vel.textContent = VELOCIDADES_AUDIO[indice][1];
       }
-      audio.addEventListener("loadedmetadata", aplicar);
-      audio.addEventListener("play", aplicar);
-      aplicar();
-      return caixa;
+      function atualizar() {
+        const total = audio.duration;
+        const pct = total > 0 ? audio.currentTime / total : 0;
+        const feitas = Math.round(pct * barras.length);
+        barras.forEach((b, i) => b.classList.toggle("fc-feita", i < feitas));
+        bolinha.style.left = pct * 100 + "%";
+        tempo.textContent = formatarTempo(audio.paused && audio.currentTime === 0 ? total : audio.currentTime);
+        play.classList.toggle("fc-tocando", !audio.paused);
+        play.setAttribute("aria-label", audio.paused ? "Tocar" : "Pausar");
+      }
+      function irPara(ev) {
+        const r = ondas.getBoundingClientRect();
+        if (!(audio.duration > 0) || r.width === 0) return;
+        const pct = Math.min(1, Math.max(0, (ev.clientX - r.left) / r.width));
+        audio.currentTime = pct * audio.duration;
+        atualizar();
+      }
+
+      vel.onclick = () => { indice = (indice + 1) % VELOCIDADES_AUDIO.length; aplicarVelocidade(); };
+      play.onclick = () => { if (audio.paused) audio.play().catch(() => {}); else audio.pause(); };
+      let arrastando = false;
+      ondas.onpointerdown = (ev) => { arrastando = true; ondas.setPointerCapture(ev.pointerId); irPara(ev); };
+      ondas.onpointermove = (ev) => { if (arrastando) irPara(ev); };
+      ondas.onpointerup = () => { arrastando = false; };
+      ["loadedmetadata", "timeupdate", "play", "pause", "ended"].forEach((n) => audio.addEventListener(n, atualizar));
+      ["loadedmetadata", "play"].forEach((n) => audio.addEventListener(n, aplicarVelocidade));
+      aplicarVelocidade();
+      atualizar();
+      return raiz;
     }
 
     function criarElementoMidia(tipo, link) {
@@ -289,13 +357,7 @@
         el.onload = rolar;
         el.src = link;
       } else if (tipo === "audio") {
-        const audio = document.createElement("audio");
-        audio.controls = true;
-        audio.preload = "metadata";
-        audio.src = link;
-        el = document.createElement("div");
-        el.className = "fc-audio";
-        el.append(audio, criarBotoesVelocidade(audio));
+        el = criarPlayerAudio(link);
       } else {
         const embed = embedDeVideo(link);
         if (embed) {

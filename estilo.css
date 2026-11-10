@@ -26,10 +26,19 @@ body { margin: 0; font-family: system-ui, "Segoe UI", Roboto, sans-serif; color:
 .fc-embed { display: block; width: 100%; min-width: 240px; aspect-ratio: 16 / 9; border: 0; border-radius: 12px; }
 /* visualização única (estilo WhatsApp) */
 .fc-chat { position: relative; }
-.fc-audio { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
-.fc-vel { display: flex; gap: 6px; }
-.fc-vel button { border: 1px solid rgba(0,0,0,.2); background: #fff; color: inherit; border-radius: 999px; padding: 2px 10px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
-.fc-vel button.fc-vel-ativa { background: var(--fc-btn-bg, var(--cor)); color: var(--fc-btn-cor, #fff); border-color: transparent; }
+/* player de áudio estilo WhatsApp */
+.fc-audio { display: flex; align-items: center; gap: 8px; width: 270px; max-width: 100%; padding: 6px 8px; box-sizing: border-box; }
+.fc-audio audio { display: none; }
+.fc-vel { flex: none; min-width: 42px; border: 0; border-radius: 999px; padding: 6px 8px; background: rgba(0,0,0,.12); color: inherit; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+.fc-play { flex: none; width: 28px; height: 28px; border: 0; padding: 0; background: none; color: var(--fc-btn-bg, var(--cor)); cursor: pointer; position: relative; }
+.fc-play::before { content: ""; position: absolute; left: 8px; top: 4px; border-left: 16px solid currentColor; border-top: 10px solid transparent; border-bottom: 10px solid transparent; }
+.fc-play.fc-tocando::before { left: 5px; top: 4px; width: 5px; height: 20px; border: 0; background: currentColor; box-shadow: 10px 0 0 currentColor; }
+.fc-meio { flex: 1; min-width: 0; }
+.fc-ondas { position: relative; display: flex; align-items: center; gap: 2px; height: 28px; cursor: pointer; touch-action: none; }
+.fc-ondas i { flex: 1; min-width: 2px; border-radius: 2px; background: rgba(0,0,0,.25); }
+.fc-ondas i.fc-feita { background: var(--fc-btn-bg, var(--cor)); }
+.fc-bolinha { position: absolute; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--fc-btn-bg, var(--cor)); pointer-events: none; }
+.fc-tempo { margin-top: 2px; font-size: 12px; opacity: .7; }
 .fc-unica { display: flex; align-items: center; gap: 8px; padding: 10px 14px; }
 .fc-unica-btn { display: flex; align-items: center; gap: 8px; background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; font-weight: 600; }
 .fc-unica-btn svg, .fc-aberta svg { flex: none; }
