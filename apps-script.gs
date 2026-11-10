@@ -101,7 +101,8 @@ function gravar(aba, cabecalho, linha, d, concluiu) {
     if (coluna === "data") return linha ? anterior : d.data;
     if (coluna === "sessao") return d.sessao;
     if (coluna === "origem") return linha ? anterior : (d.origem || "");
-    if (coluna === "caminho") return d.caminho !== undefined && d.caminho !== "" ? d.caminho : anterior;
+    // eventos podem chegar fora de ordem: fica sempre o caminho mais completo (o mais longo)
+    if (coluna === "caminho") return d.caminho && String(d.caminho).length >= String(anterior || "").length ? d.caminho : anterior;
     if (coluna === "concluiu") return concluiu ? "sim" : (anterior || "não");
     return respostas[coluna] !== undefined ? protegerTexto(respostas[coluna]) : anterior;
   });

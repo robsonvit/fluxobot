@@ -118,16 +118,17 @@
       const q = new URLSearchParams(location.search);
       origem = q.get("utm_source") || (document.referrer ? new URL(document.referrer).hostname : "direto");
     } catch (e) { /* mantém "direto" */ }
-    let fila = Promise.resolve(); // garante a ordem dos envios
+    // Cada envio sai na hora (keepalive): se o visitante fechar a página logo depois, nada se perde.
+    // A planilha aceita eventos fora de ordem (cada um traz tudo que foi feito até ali).
     const enviar = (evento, respostas) => {
       const corpo = JSON.stringify({
         evento, sessao, fluxo: fluxo.nome || "bot", data: new Date().toISOString(),
-        origem, caminho: caminho.join(" > "), respostas,
+        origem, caminho: caminho.join(" > "), respostas: { ...respostas },
       });
       // text/plain + no-cors evita bloqueio (CORS) no Google Apps Script
-      fila = fila.then(() => fetch(url, {
+      fetch(url, {
         method: "POST", mode: "no-cors", keepalive: true, headers: { "Content-Type": "text/plain" }, body: corpo,
-      }).catch(() => { /* sem internet: ignora */ }));
+      }).catch(() => { /* sem internet: ignora */ });
     };
     return {
       inicio: () => enviar("inicio", {}),
