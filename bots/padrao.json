@@ -97,13 +97,6 @@
       }
     },
     {
-      "id": "nq00z6l",
-      "type": "fim",
-      "x": 2460,
-      "y": 420,
-      "data": {}
-    },
-    {
       "id": "nsgdvjx",
       "type": "espera",
       "x": 1520,
@@ -138,6 +131,34 @@
       "data": {
         "segundos": "4"
       }
+    },
+    {
+      "id": "nlm53cz",
+      "type": "redirecionar",
+      "x": 2740,
+      "y": 650,
+      "data": {
+        "url": "https://youtu.be/94d-jkd0KkM?si=dg2DdAWNtPEFKPqL",
+        "novaAba": true
+      }
+    },
+    {
+      "id": "nso8kqe",
+      "type": "audio",
+      "x": 2730,
+      "y": 990,
+      "data": {
+        "url": "midias/padrao/1794350472065-tati-silva-s-video-jan-13-2026.mp3",
+        "visualizacaoUnica": true,
+        "espera": "2"
+      }
+    },
+    {
+      "id": "nm32g98",
+      "type": "fim",
+      "x": 3150,
+      "y": 910,
+      "data": {}
     }
   ],
   "edges": [
@@ -155,16 +176,6 @@
       "from": "nvsn7px",
       "port": 1,
       "to": "ntsupqs"
-    },
-    {
-      "from": "ncsbaig",
-      "port": 0,
-      "to": "nq00z6l"
-    },
-    {
-      "from": "ncsbaig",
-      "port": 1,
-      "to": "nq00z6l"
     },
     {
       "from": "ntsupqs",
@@ -215,6 +226,26 @@
       "from": "a",
       "port": "out",
       "to": "n88u3y3"
+    },
+    {
+      "from": "ncsbaig",
+      "port": 0,
+      "to": "nlm53cz"
+    },
+    {
+      "from": "ncsbaig",
+      "port": 1,
+      "to": "nso8kqe"
+    },
+    {
+      "from": "nso8kqe",
+      "port": "out",
+      "to": "nm32g98"
+    },
+    {
+      "from": "nlm53cz",
+      "port": "out",
+      "to": "nm32g98"
     }
   ],
   "tema": {
