@@ -48,3 +48,22 @@ Um "Typebot" grátis em português: você monta a conversa arrastando blocos e o
 - Bot no Telegram (grátis) usando o mesmo fluxo
 - Aviso por e-mail/Telegram a cada novo lead
 - Bloco de condição (se/senão)
+
+## Importar do Typebot
+
+1. No Typebot: menu do bot > **Share > Export** (baixa um `.json`).
+2. No FluxoBot: **⬆ Importar .json**, escolha o arquivo e dê um nome ao bot novo.
+3. Revise, teste e clique em **💾 Salvar**.
+
+Entram: textos (negrito/itálico), esperas (viram "Esperar antes" de cada bloco), botões, perguntas
+(texto, e-mail, número, telefone), imagem, áudio, vídeo e links. O que não é suportado
+(ex.: condições, variáveis, integrações) é ignorado e aparece listado no aviso da importação.
+O visual (cores, foto do perfil) não é importado.
+
+## Imagens, áudios e vídeos
+
+- **Link público:** cole o endereço (`https://...`). Vídeos do YouTube e Vimeo viram player.
+- **Arquivo do seu PC (mais fácil):** no bloco, clique em **📎 Enviar do PC**. O arquivo vai para a pasta
+  `midias/` do repositório e funciona sem depender de outro site. Limite: 25 MB por arquivo
+  (para vídeos maiores, use YouTube/Vimeo).
+- Texto: `*negrito*`, `_itálico_`, `~riscado~` e `{{variavel}}`.

@@ -149,25 +149,85 @@
   }
 
   /* ---------- Novo bot e link ---------- */
-  function novoBot() {
-    const nome = prompt("Nome do novo bot (ex.: Vendas, Suporte):");
+  // Cria um bot novo (vazio ou vindo de um arquivo importado) e abre no editor
+  function criarBot(nomeSugerido, fluxoInicial, avisoExtra) {
+    const nome = prompt("Nome do novo bot (ex.: Vendas, Suporte):", (nomeSugerido || "").trim());
     if (!nome) return;
     const slug = criarSlug(nome);
     if (!slug) { alert("Use letras ou números no nome."); return; }
-    if ([...seletor.options].some((o) => o.value === slug) && !confirm("Já existe um bot com esse nome. Abrir um bot vazio e sobrescrever ao salvar?")) return;
+    if ([...seletor.options].some((o) => o.value === slug) && !confirm("Já existe um bot com esse nome. Abrir e sobrescrever ao salvar?")) return;
     botAtual = slug;
     guardar(CHAVE_BOT, slug);
-    window.FluxoEditor.definir({
-      nome,
+    const base = fluxoInicial || {
       nodes: [
         { id: "a", type: "inicio", x: 40, y: 60, data: {} },
         { id: "b", type: "mensagem", x: 320, y: 40, data: { texto: "Olá! Como posso ajudar?" } },
       ],
       edges: [{ from: "a", port: "out", to: "b" }],
-    });
+    };
+    window.FluxoEditor.definir({ ...base, nome });
     preencherSeletor([...seletor.options].map((o) => o.value));
-    mostrar("Bot novo '" + slug + "'. Monte o fluxo e clique em Salvar.");
+    mostrar((avisoExtra ? avisoExtra + " " : "") + "Bot '" + slug + "' criado. Clique em Salvar para publicar.");
   }
+
+  const novoBot = () => criarBot();
+
+  /* ---------- Enviar arquivos (imagem, áudio, vídeo) para o repositório ---------- */
+  const LIMITE_ARQUIVO_MB = 25;
+  const PREFIXO_TIPO = { imagem: "image/", audio: "audio/", video: "video/" };
+
+  function escolherArquivo(tipo) {
+    return new Promise((resolve) => {
+      const entrada = document.createElement("input");
+      entrada.type = "file";
+      entrada.accept = (PREFIXO_TIPO[tipo] || "image/") + "*";
+      entrada.onchange = () => resolve(entrada.files[0] || null);
+      entrada.click();
+    });
+  }
+
+  async function paraBase64DoArquivo(arquivo) {
+    const bytes = new Uint8Array(await arquivo.arrayBuffer());
+    let bin = "";
+    for (let i = 0; i < bytes.length; i += 8192) bin += String.fromCharCode(...bytes.subarray(i, i + 8192));
+    return btoa(bin);
+  }
+
+  async function escolherEEnviar(tipo) {
+    const arquivo = await escolherArquivo(tipo);
+    if (!arquivo) return null;
+    if (!arquivo.type.startsWith(PREFIXO_TIPO[tipo] || "")) { alert("Esse arquivo não é do tipo certo para este bloco."); return null; }
+    if (arquivo.size > LIMITE_ARQUIVO_MB * 1024 * 1024) { alert("Arquivo grande demais (máximo " + LIMITE_ARQUIVO_MB + " MB). Para vídeos maiores, use um link do YouTube ou Vimeo."); return null; }
+
+    let token = guardado(CHAVE_TOKEN);
+    if (token && !tokenValido(token)) { apagar(CHAVE_TOKEN); token = null; }
+    token = token || pedirToken();
+    if (!token) { mostrar("Envio cancelado."); return null; }
+
+    const partes = arquivo.name.split(".");
+    const extensao = (partes.length > 1 ? partes.pop() : "bin").toLowerCase().replace(/[^a-z0-9]/g, "");
+    const caminho = `midias/${botAtual}/${Date.now()}-${criarSlug(partes.join(".")) || "arquivo"}.${extensao}`;
+
+    mostrar("Enviando " + arquivo.name + "...");
+    try {
+      const resp = await fetch(urlApi(caminho), {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json", "Content-Type": "application/json" },
+        body: JSON.stringify({ message: "chat: envia midia do bot " + botAtual, content: await paraBase64DoArquivo(arquivo) }),
+      });
+      if (resp.status === 401 || resp.status === 403) { apagar(CHAVE_TOKEN); throw new Error("O token não funcionou. Tente de novo para colar outro."); }
+      if (!resp.ok) throw new Error("O GitHub recusou o arquivo (código " + resp.status + ").");
+      // Prévia imediata no teste do editor, antes do site terminar de atualizar
+      window.FluxoMidiaLocal = { ...(window.FluxoMidiaLocal || {}), [caminho]: URL.createObjectURL(arquivo) };
+      mostrar("✔ Arquivo enviado. No chat público ele aparece em ~1 minuto.");
+      return caminho;
+    } catch (e) {
+      mostrar("✖ " + e.message);
+      return null;
+    }
+  }
+
+  window.FluxoBots = { criarBot, escolherEEnviar };
 
   async function copiarLink() {
     const base = location.origin + location.pathname.replace(/[^/]*$/, "");

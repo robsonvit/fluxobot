@@ -14,6 +14,11 @@
     <button data-add="mensagem">+ Mensagem</button>
     <button data-add="pergunta">+ Pergunta</button>
     <button data-add="botoes">+ Botões</button>
+    <button data-add="imagem">+ Imagem</button>
+    <button data-add="audio">+ Áudio</button>
+    <button data-add="video">+ Vídeo</button>
+    <button data-add="espera">+ Pausa</button>
+    <button data-add="redirecionar">+ Link</button>
     <button data-add="webhook">+ Enviar dados</button>
     <button data-add="fim">+ Fim</button>
     <span class="sep"></span>
@@ -25,7 +30,7 @@
     <button id="btn-carregar">☁ Recarregar</button>
     <span id="status" class="dica" style="margin-left:0"></span>
     <button id="btn-baixar">⬇ Baixar fluxo.json</button>
-    <label class="btn">⬆ Abrir arquivo<input type="file" id="arquivo" accept=".json" hidden></label>
+    <label class="btn" title="Aceita fluxos do FluxoBot e exportados do Typebot">⬆ Importar .json<input type="file" id="arquivo" accept=".json" hidden></label>
     <button id="btn-novo">Novo exemplo</button>
     <span class="dica">Clique na bolinha da direita e depois na da esquerda de outro bloco para ligar. Clique na linha para apagar.</span>
   </div>
@@ -37,6 +42,7 @@
     </aside>
   </div>
   <script src="chat.js"></script>
+  <script src="importar-typebot.js"></script>
   <script src="editor.js"></script>
   <script src="salvar-github.js"></script>
 </body>

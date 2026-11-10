@@ -59,3 +59,18 @@ body.editor { display: grid; grid-template-rows: auto 1fr; height: 100vh; overfl
 /* ---------- Página do chat ---------- */
 body.pagina-chat { height: 100vh; margin: 0; }
 body.pagina-chat #chat { height: 100%; max-width: 520px; margin: 0 auto; }
+
+/* ---------- Mídias no chat ---------- */
+.fc-midia { padding: 4px; background: #eceefc; }
+.fc-midia img, .fc-midia video { display: block; max-width: 100%; max-height: 420px; border-radius: 12px; }
+.fc-midia audio { display: block; width: 260px; max-width: 100%; }
+.fc-embed { display: block; width: 100%; min-width: 240px; aspect-ratio: 16 / 9; border: 0; border-radius: 12px; }
+.fc-link { display: inline-block; padding: 10px 16px; background: var(--cor); color: #fff; border-radius: 10px; text-decoration: none; font-weight: 600; }
+.fc-digitando { display: flex; gap: 4px; padding: 12px 14px; }
+.fc-digitando span { width: 7px; height: 7px; border-radius: 50%; background: #8b8fa8; animation: fc-pulo 1s infinite ease-in-out; }
+.fc-digitando span:nth-child(2) { animation-delay: .15s; }
+.fc-digitando span:nth-child(3) { animation-delay: .3s; }
+@keyframes fc-pulo { 0%, 60%, 100% { transform: translateY(0); opacity: .5; } 30% { transform: translateY(-4px); opacity: 1; } }
+.t-imagem header { background: #db2777; } .t-audio header { background: #7c3aed; }
+.t-video header { background: #0d9488; } .t-redirecionar header { background: #ea580c; }
+.t-espera header { background: #64748b; }

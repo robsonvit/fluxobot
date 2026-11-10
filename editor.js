@@ -4,7 +4,9 @@
   const TITULOS = {
     inicio: "▶ Início", mensagem: "💬 Mensagem", pergunta: "❓ Pergunta",
     botoes: "🔘 Botões", webhook: "📤 Enviar dados", fim: "⏹ Fim",
+    imagem: "🖼 Imagem", audio: "🎧 Áudio", video: "🎬 Vídeo", redirecionar: "🔗 Abrir link", espera: "⏱ Esperar",
   };
+  const ROTULO_ARQUIVO = { imagem: "imagem", audio: "áudio", video: "vídeo" };
 
   const quadro = document.getElementById("quadro");
   const svg = document.getElementById("linhas");
@@ -90,11 +92,33 @@
 
     const corpo = criar("div", "corpo");
     const set = (k) => (v) => { no.data[k] = v; };
+    const campoEspera = () => campo("Esperar antes (segundos)", "input", no.data.espera, set("espera"));
     if (no.type === "mensagem") {
-      corpo.append(campo("Texto (use {{variavel}})", "textarea", no.data.texto, set("texto")));
+      corpo.append(
+        campo("Texto (*negrito* _itálico_ {{variavel}})", "textarea", no.data.texto, set("texto")),
+        campoEspera(),
+      );
+    } else if (no.type === "imagem" || no.type === "audio" || no.type === "video") {
+      corpo.append(campo("Link público (https://...)", "input", no.data.url, set("url")));
+      const enviar = criar("button", "mini", "📎 Enviar " + ROTULO_ARQUIVO[no.type] + " do PC");
+      enviar.onclick = async () => {
+        if (!window.FluxoBots) return;
+        const url = await window.FluxoBots.escolherEEnviar(no.type);
+        if (url) { no.data.url = url; salvar(); redesenhar(); }
+      };
+      corpo.append(enviar, campoEspera());
+    } else if (no.type === "redirecionar") {
+      corpo.append(
+        campo("Endereço do link", "input", no.data.url, set("url")),
+        campo("Abrir em", "select", no.data.novaAba ? "sim" : "nao", (v) => { no.data.novaAba = v === "sim"; },
+          [["nao", "Mesma página (encerra o chat)"], ["sim", "Nova aba (o chat continua)"]]),
+      );
+    } else if (no.type === "espera") {
+      corpo.append(campo("Segundos de pausa", "input", no.data.segundos, set("segundos")));
     } else if (no.type === "pergunta") {
       corpo.append(
         campo("Pergunta", "textarea", no.data.texto, set("texto")),
+        campoEspera(),
         campo("Guardar resposta em", "input", no.data.variavel, set("variavel")),
         campo("Tipo de resposta", "select", no.data.tipo || "texto", set("tipo"),
           [["texto", "Texto"], ["email", "E-mail"], ["numero", "Número"], ["telefone", "Telefone"]]),
@@ -102,6 +126,7 @@
     } else if (no.type === "botoes") {
       corpo.append(
         campo("Pergunta", "textarea", no.data.texto, set("texto")),
+        campoEspera(),
         campo("Guardar escolha em", "input", no.data.variavel, set("variavel")),
       );
       (no.data.opcoes || []).forEach((rotulo, i) => {
@@ -144,7 +169,15 @@
     return el;
   }
 
+  function ajustarTamanhoDoQuadro() {
+    const maxX = Math.max(0, ...fluxo.nodes.map((n) => n.x));
+    const maxY = Math.max(0, ...fluxo.nodes.map((n) => n.y));
+    quadro.style.width = Math.max(3000, maxX + 700) + "px";
+    quadro.style.height = Math.max(2000, maxY + 700) + "px";
+  }
+
   function redesenhar() {
+    ajustarTamanhoDoQuadro();
     quadro.querySelectorAll(".no").forEach((n) => n.remove());
     fluxo.nodes.forEach((no) => quadro.append(desenharNo(no)));
     desenharLinhas();
@@ -227,6 +260,11 @@
       pergunta: { texto: "Qual a sua pergunta?", variavel: "resposta", tipo: "texto" },
       botoes: { texto: "Escolha uma opção:", variavel: "escolha", opcoes: ["Sim", "Não"] },
       webhook: { url: "" },
+      imagem: { url: "" },
+      audio: { url: "" },
+      video: { url: "" },
+      redirecionar: { url: "", novaAba: false },
+      espera: { segundos: 2 },
       fim: {},
     }[tipo];
     const no = { id: novoId(), type: tipo, x: c.scrollLeft + 60, y: c.scrollTop + 60, data: dados };
@@ -258,7 +296,10 @@
   const painel = document.getElementById("teste");
   function testar() {
     painel.classList.add("aberto");
-    window.FluxoChat.executar(fluxo, document.getElementById("conversa"));
+    window.FluxoChat.executar(fluxo, document.getElementById("conversa"), {
+      semRedirecionar: true, // no teste, links aparecem como botão e não tiram você do editor
+      resolverUrl: (url) => (window.FluxoMidiaLocal || {})[url],
+    });
   }
 
   function baixar() {
@@ -277,12 +318,21 @@
     leitor.onload = () => {
       try {
         const lido = JSON.parse(leitor.result);
-        if (!Array.isArray(lido.nodes) || !Array.isArray(lido.edges)) throw new Error("formato");
-        fluxo = lido;
-        document.getElementById("nome").value = fluxo.nome || "";
-        salvar(); redesenhar();
+        let novo = lido;
+        let aviso = "";
+        if (window.ImportarTypebot && window.ImportarTypebot.ehTypebot(lido)) {
+          const { fluxo: convertido, relatorio } = window.ImportarTypebot.converter(lido);
+          novo = convertido;
+          aviso = `Importado do Typebot: ${relatorio.blocosCriados} blocos, ${relatorio.midias.length} mídias.`;
+          const ign = Object.entries(relatorio.ignorados).map(([t, q]) => `${t} (${q})`).join(", ");
+          if (ign) aviso += ` Não suportados e ignorados: ${ign}.`;
+        } else if (!Array.isArray(lido.nodes) || !Array.isArray(lido.edges)) {
+          throw new Error("formato");
+        }
+        if (window.FluxoBots) window.FluxoBots.criarBot(novo.nome, novo, aviso);
+        else { fluxo = novo; document.getElementById("nome").value = fluxo.nome || ""; salvar(); redesenhar(); }
       } catch (e) {
-        alert("Esse arquivo não parece ser um fluxo válido do FluxoBot.");
+        alert("Esse arquivo não parece ser um fluxo válido (FluxoBot ou Typebot).");
       }
     };
     leitor.readAsText(arq);
