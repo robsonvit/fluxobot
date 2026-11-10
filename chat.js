@@ -468,12 +468,14 @@
       else global.location.href = link;
     }
 
-    async function aguardar(dados) {
+    const ICONE_MICROFONE = '<svg viewBox="0 0 24 24" width="22" height="22" aria-label="Gravando áudio"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg>';
+
+    async function aguardar(dados, gravando) {
       const s = numero(dados.espera);
       const ms = s === null ? ESPERA_PADRAO_MS : Math.min(Math.max(0, s * 1000), ESPERA_MAXIMA_MS);
       if (ms === 0) return;
-      const ind = balao("bot", "fc-digitando");
-      ind.innerHTML = "<span></span><span></span><span></span>";
+      const ind = balao("bot", gravando ? "fc-gravando" : "fc-digitando");
+      ind.innerHTML = gravando ? ICONE_MICROFONE : "<span></span><span></span><span></span>";
       await esperar(ms);
       ind.remove();
     }
@@ -548,7 +550,7 @@
           if (!ativo()) return;
           adicionar(interpolar(d.texto, respostas), "bot");
         } else if (no.type === "imagem" || no.type === "audio" || no.type === "video") {
-          await aguardar(d);
+          await aguardar(d, no.type === "audio");
           if (!ativo()) return;
           const link = urlSegura(d.url, config.resolverUrl);
           if (link) adicionarMidia(no.type, link, d.visualizacaoUnica === true);
