@@ -307,5 +307,15 @@
     quadro.querySelectorAll(".porta.ativa").forEach((p) => p.classList.remove("ativa"));
   });
 
+  // Pequena ponte para o salvar-github.js (que grava o fluxo no GitHub)
+  window.FluxoEditor = {
+    obter: () => fluxo,
+    definir: (novo) => {
+      fluxo = novo;
+      nome.value = fluxo.nome || "";
+      salvar(); redesenhar();
+    },
+  };
+
   redesenhar();
 })();
