@@ -165,6 +165,18 @@
       corBalaoUsuario: "#dcf8c6", corTextoUsuario: "#111b21",
       corBotao: "#00a884", corTextoBotao: "#ffffff",
     },
+    messenger: {
+      mostrarBarra: true, corBarra: "#0084ff", corFundo: "#ffffff",
+      corBalaoBot: "#e4e6eb", corTextoBot: "#050505",
+      corBalaoUsuario: "#0084ff", corTextoUsuario: "#ffffff",
+      corBotao: "#0084ff", corTextoBotao: "#ffffff",
+    },
+    instagram: {
+      mostrarBarra: true, corBarra: "#c13584", corFundo: "#ffffff",
+      corBalaoBot: "#efefef", corTextoBot: "#262626",
+      corBalaoUsuario: "#8a3ab9", corTextoUsuario: "#ffffff",
+      corBotao: "#8a3ab9", corTextoBotao: "#ffffff",
+    },
   };
 
   function criarBarra(tema, config) {

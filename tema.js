@@ -111,7 +111,7 @@
 
     const modelos = secao("Comece por um modelo");
     const linhaModelos = el("div", "modelos");
-    [["padrao", "Padrão"], ["whatsapp", "💬 WhatsApp"]].forEach(([id, texto]) => {
+    [["padrao", "Padrão"], ["whatsapp", "💬 WhatsApp"], ["messenger", "🗨️ Messenger"], ["instagram", "📸 Instagram"]].forEach(([id, texto]) => {
       const b = el("button", "", texto);
       b.onclick = () => escolherModelo(id);
       linhaModelos.append(b);
