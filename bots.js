@@ -121,7 +121,11 @@
   }
 
   async function buscarDoSite(slug) {
-    const resp = await fetch(`${PASTA}/${slug}.json?v=${Date.now()}`);
+    // Lê direto do GitHub (versão mais recente). O site público demora ~1 min para refletir o salvamento.
+    const token = guardado(CHAVE_TOKEN);
+    const cab = { Accept: "application/vnd.github.raw+json", ...(token && tokenValido(token) ? { Authorization: `Bearer ${token}` } : {}) };
+    let resp = await fetch(`${urlApi(`${PASTA}/${slug}.json`)}?v=${Date.now()}`, { headers: cab, cache: "no-store" }).catch(() => null);
+    if (!resp || !resp.ok) resp = await fetch(`${PASTA}/${slug}.json?v=${Date.now()}`, { cache: "no-store" });
     if (!resp.ok) throw new Error("não encontrei o bot " + slug);
     const lido = await resp.json();
     if (!Array.isArray(lido.nodes) || !Array.isArray(lido.edges)) throw new Error("formato inválido");
@@ -154,7 +158,7 @@
       const conteudo = JSON.stringify(window.FluxoEditor.obter(), null, 2) + "\n";
       await gravarArquivo(token, `${PASTA}/${botAtual}.json`, paraBase64(conteudo), `chat: atualiza o bot ${botAtual}`);
       window.FluxoEditor.marcarSalvo();
-      UI.toast("Salvo! O chat público atualiza em cerca de 1 minuto.", "ok");
+      UI.toast("Salvo com sucesso! (O chat público leva cerca de 1 minuto para mostrar a mudança.)", "ok");
       listarBots();
     } catch (e) {
       UI.toast(e.message, "erro");
