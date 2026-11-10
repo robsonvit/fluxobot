@@ -58,7 +58,7 @@ Um "Typebot" grátis em português: você monta a conversa arrastando blocos e o
 Entram: textos (negrito/itálico), esperas (viram "Esperar antes" de cada bloco), botões, perguntas
 (texto, e-mail, número, telefone), imagem, áudio, vídeo e links. O que não é suportado
 (ex.: condições, variáveis, integrações) é ignorado e aparece listado no aviso da importação.
-O visual (cores, foto do perfil) não é importado.
+A aparência (cores, foto, nome e a barra de contato estilo WhatsApp) também é importada.
 
 ## Imagens, áudios e vídeos
 
@@ -67,3 +67,10 @@ O visual (cores, foto do perfil) não é importado.
   `midias/` do repositório e funciona sem depender de outro site. Limite: 25 MB por arquivo
   (para vídeos maiores, use YouTube/Vimeo).
 - Texto: `*negrito*`, `_itálico_`, `~riscado~` e `{{variavel}}`.
+
+## Aparência do chat (🎨)
+
+Clique em **🎨 Aparência** no editor. Escolha um modelo (**Padrão** ou **💬 WhatsApp**) e ajuste:
+barra de contato (foto, nome, "online"), cores dos balões, do texto, dos botões e do fundo, e uma
+imagem de papel de parede. A prévia muda ao vivo no painel de teste. Cada bot tem a sua aparência;
+ela é salva junto com o bot ao clicar em **💾 Salvar**.

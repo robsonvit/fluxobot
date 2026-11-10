@@ -107,6 +107,78 @@
     }
   }
 
+  /* ---------- Tema (aparência) ---------- */
+  const MAPA_CORES = {
+    corBarra: "--fc-barra", corFundo: "--fc-fundo",
+    corBalaoBot: "--fc-bot-bg", corTextoBot: "--fc-bot-cor",
+    corBalaoUsuario: "--fc-user-bg", corTextoUsuario: "--fc-user-cor",
+    corBotao: "--fc-btn-bg", corTextoBotao: "--fc-btn-cor",
+  };
+  const COR_VALIDA = /^#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
+  const SVG = (caminho) => `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="${caminho}"/></svg>`;
+  const ICONES = {
+    voltar: SVG("M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"),
+    video: SVG("M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"),
+    telefone: SVG("M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"),
+    mais: SVG("M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"),
+  };
+
+  /* Modelos prontos. Cores ausentes = visual padrão do FluxoBot. */
+  const TEMAS = {
+    padrao: { mostrarBarra: false },
+    whatsapp: {
+      mostrarBarra: true, corBarra: "#005e54", corFundo: "#ece5dd",
+      corBalaoBot: "#ffffff", corTextoBot: "#111b21",
+      corBalaoUsuario: "#dcf8c6", corTextoUsuario: "#111b21",
+      corBotao: "#00a884", corTextoBotao: "#ffffff",
+    },
+  };
+
+  function criarBarra(tema, config) {
+    const barra = document.createElement("div");
+    barra.className = "fc-barra";
+    barra.insertAdjacentHTML("beforeend", ICONES.voltar); // ícones fixos do programa
+    const foto = tema.foto ? urlSegura(tema.foto, config && config.resolverUrl) : null;
+    if (foto) {
+      const img = document.createElement("img");
+      img.className = "fc-avatar";
+      img.alt = "";
+      img.src = foto;
+      barra.append(img);
+    }
+    const info = document.createElement("div");
+    info.className = "fc-info";
+    const nome = document.createElement("span");
+    nome.className = "fc-nome";
+    nome.textContent = tema.nome === undefined ? "Contato" : tema.nome;
+    const status = document.createElement("span");
+    status.className = "fc-status";
+    status.textContent = tema.status === undefined ? "online" : tema.status;
+    info.append(nome, status);
+    const acoes = document.createElement("div");
+    acoes.className = "fc-acoes";
+    acoes.insertAdjacentHTML("beforeend", ICONES.video + ICONES.telefone + ICONES.mais);
+    barra.append(info, acoes);
+    return barra;
+  }
+
+  /* Aplica (ou reaplica) o tema numa conversa já criada. Só aceita cores em hexadecimal. */
+  function aplicarTema(raiz, tema, config) {
+    const t = tema || {};
+    Object.entries(MAPA_CORES).forEach(([chave, variavel]) => {
+      if (COR_VALIDA.test(t[chave] || "")) raiz.style.setProperty(variavel, t[chave]);
+      else raiz.style.removeProperty(variavel);
+    });
+    const msgs = raiz.querySelector(".fc-msgs");
+    if (msgs) {
+      const img = t.fundoImagem ? urlSegura(t.fundoImagem, config && config.resolverUrl) : null;
+      msgs.style.backgroundImage = img ? `url("${img}")` : "";
+    }
+    const antiga = raiz.querySelector(":scope > .fc-barra");
+    if (antiga) antiga.remove();
+    if (t.mostrarBarra) raiz.prepend(criarBarra(t, config));
+  }
+
   function executar(fluxo, raiz, opcoes) {
     const config = opcoes || {};
     const idExecucao = String(Math.random());
@@ -118,6 +190,7 @@
     const entrada = document.createElement("div");
     entrada.className = "fc-entrada";
     raiz.append(mensagens, entrada);
+    aplicarTema(raiz, fluxo.tema, config);
 
     const ativo = () => raiz.dataset.exec === idExecucao;
     const rolar = () => { mensagens.scrollTop = mensagens.scrollHeight; };
@@ -301,5 +374,5 @@
     rodar();
   }
 
-  global.FluxoChat = { executar };
+  global.FluxoChat = { executar, aplicarTema, TEMAS };
 })(window);

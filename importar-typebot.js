@@ -43,6 +43,43 @@
     return Number.isFinite(n) && n >= 0 ? n : 0;
   }
 
+  /* ---------- Tema ---------- */
+  const corHex = (v) => (typeof v === "string" && /^#[0-9a-fA-F]{3,8}$/.test(v.trim()) ? v.trim() : undefined);
+
+  // Lê só TEXTOS do código de cabeçalho do Typebot (nome, foto, cor da barra). Nada é executado.
+  function lerBarraDoCodigo(codigo) {
+    if (!/user-bar/.test(codigo || "")) return null;
+    const nomeStatus = /<span>([^<]*)<\/span>\s*<span class="status">([^<]*)<\/span>/.exec(codigo);
+    const foto = /<img[^>]*?src\s*=\s*["']([^"']+)["']/.exec(codigo);
+    const cor = /\.user-bar\s*\{[^}]*?background\s*:\s*(#[0-9a-fA-F]{3,8})/.exec(codigo);
+    if (!nomeStatus && !foto) return null;
+    const barra = { mostrarBarra: true };
+    if (nomeStatus) { barra.nome = nomeStatus[1].trim(); barra.status = nomeStatus[2].trim(); }
+    if (foto) barra.foto = foto[1].trim();
+    if (cor) barra.corBarra = cor[1];
+    return barra;
+  }
+
+  function converterTema(typebot) {
+    const tema = {};
+    const guardar = (chave, valor) => { if (valor !== undefined && valor !== "") tema[chave] = valor; };
+    const geral = ((typebot.theme || {}).general) || {};
+    const chat = ((typebot.theme || {}).chat) || {};
+    const fundo = geral.background || {};
+    if (fundo.type === "Color") guardar("corFundo", corHex(fundo.content));
+    if (fundo.type === "Image" && fundo.content) guardar("fundoImagem", fundo.content);
+    guardar("corBalaoBot", corHex((chat.hostBubbles || {}).backgroundColor));
+    guardar("corTextoBot", corHex((chat.hostBubbles || {}).color));
+    guardar("corBalaoUsuario", corHex((chat.guestBubbles || {}).backgroundColor));
+    guardar("corTextoUsuario", corHex((chat.guestBubbles || {}).color));
+    guardar("corBotao", corHex((chat.buttons || {}).backgroundColor));
+    guardar("corTextoBotao", corHex((chat.buttons || {}).color));
+    const barra = lerBarraDoCodigo((((typebot.settings || {}).metadata) || {}).customHeadCode);
+    if (barra) Object.assign(tema, barra);
+    else if ((chat.hostAvatar || {}).isEnabled && chat.hostAvatar.url) tema.foto = chat.hostAvatar.url;
+    return Object.keys(tema).length ? tema : null;
+  }
+
   /* ---------- Conversão ---------- */
   function converter(typebot) {
     if (!ehTypebot(typebot)) throw new Error("Este arquivo não parece ser um fluxo exportado do Typebot.");
@@ -201,9 +238,15 @@
     const minY = Math.min(...todos.map((n) => n.y));
     todos.forEach((n) => { n.x = Math.round(n.x - minX + MARGEM); n.y = Math.round(n.y - minY + MARGEM); });
 
+    const tema = converterTema(typebot);
+    const fluxo = { nome: typebot.name || "Bot importado", nodes: todos, edges: saidas };
+    if (tema) fluxo.tema = tema;
+
     return {
-      fluxo: { nome: typebot.name || "Bot importado", nodes: todos, edges: saidas },
+      fluxo,
       relatorio: {
+        tema: !!tema,
+        barraDeContato: !!(tema && tema.mostrarBarra),
         blocosNoTypebot: typebot.groups.reduce((s, g) => s + (g.blocks || []).length, 0),
         blocosCriados: nos.length,
         ignorados,

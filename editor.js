@@ -324,6 +324,7 @@
           const { fluxo: convertido, relatorio } = window.ImportarTypebot.converter(lido);
           novo = convertido;
           aviso = `Importado do Typebot: ${relatorio.blocosCriados} blocos, ${relatorio.midias.length} mídias.`;
+          if (relatorio.tema) aviso += relatorio.barraDeContato ? " Aparência importada (inclui a barra de contato)." : " Aparência importada.";
           const ign = Object.entries(relatorio.ignorados).map(([t, q]) => `${t} (${q})`).join(", ");
           if (ign) aviso += ` Não suportados e ignorados: ${ign}.`;
         } else if (!Array.isArray(lido.nodes) || !Array.isArray(lido.edges)) {
@@ -364,7 +365,10 @@
       fluxo = novo;
       nome.value = fluxo.nome || "";
       salvar(); redesenhar();
+      if (window.FluxoTema) window.FluxoTema.recarregar();
     },
+    obterTema: () => fluxo.tema || {},
+    atualizarTema: (tema) => { fluxo = { ...fluxo, tema }; salvar(); },
   };
 
   redesenhar();
