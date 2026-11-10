@@ -76,16 +76,18 @@
       "x": 1780,
       "y": 250,
       "data": {
-        "url": "midias/padrao/1794346861110-img-848.jpg"
+        "url": "midias/padrao/1794346861110-img-848.jpg",
+        "espera": "10"
       }
     },
     {
       "id": "nyhsv50",
       "type": "imagem",
-      "x": 1780,
-      "y": 540,
+      "x": 1770,
+      "y": 710,
       "data": {
-        "url": ""
+        "url": "",
+        "espera": "10"
       }
     }
   ],
