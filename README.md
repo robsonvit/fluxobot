@@ -8,9 +8,9 @@ Um "Typebot" grátis em português: você monta a conversa arrastando blocos e o
    - Para ligar: clique na bolinha da **direita** de um bloco e depois na bolinha da **esquerda** de outro.
    - Para apagar uma ligação: clique na linha.
 2. **Testar:** botão **▶ Testar**.
-3. **Salvar:** botão **⬇ Baixar fluxo.json** e coloque o arquivo na raiz do repositório (substituindo o `fluxo.json`).
+3. **Salvar:** botão **⬇ Baixar fluxo.json** e ou, melhor, use o botão **💾 Salvar** (grava em `bots/NOME.json`).
 4. **Chat público:** `https://SEU-USUARIO.github.io/SEU-REPO/chat.html`
-   - Outro fluxo: salve como `vendas.json` e use `chat.html?f=vendas`.
+   - Outro bot: use **+ Novo bot** no editor e abra `chat.html?f=nome-do-bot`.
 
 ## Colocar o chat no seu site
 
