@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chat</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body class="pagina-chat">
+  <div id="chat"></div>
+  <script src="chat.js"></script>
+  <script>
+    // Use chat.html?f=outro-fluxo para carregar outro arquivo (outro-fluxo.json)
+    const nome = new URLSearchParams(location.search).get("f") || "fluxo";
+    const seguro = /^[\w-]+$/.test(nome) ? nome : "fluxo";
+    fetch(seguro + ".json")
+      .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then((fluxo) => FluxoChat.executar(fluxo, document.getElementById("chat")))
+      .catch(() => { document.getElementById("chat").textContent = "Não consegui carregar o fluxo."; });
+  </script>
+</body>
+</html>

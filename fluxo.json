@@ -1,0 +1,23 @@
+{
+  "nome": "Meu primeiro fluxo",
+  "nodes": [
+    { "id": "a", "type": "inicio", "x": 40, "y": 60, "data": {} },
+    { "id": "b", "type": "mensagem", "x": 320, "y": 40, "data": { "texto": "Olá! 👋 Eu sou o assistente virtual." } },
+    { "id": "c", "type": "pergunta", "x": 600, "y": 40, "data": { "texto": "Qual é o seu nome?", "variavel": "nome", "tipo": "texto" } },
+    { "id": "d", "type": "botoes", "x": 880, "y": 40, "data": { "texto": "Prazer, {{nome}}! Como posso ajudar?", "variavel": "interesse", "opcoes": ["Quero um orçamento", "Tenho uma dúvida"] } },
+    { "id": "e", "type": "pergunta", "x": 1160, "y": 20, "data": { "texto": "Qual o seu e-mail para eu te enviar o orçamento?", "variavel": "email", "tipo": "email" } },
+    { "id": "f", "type": "mensagem", "x": 1160, "y": 260, "data": { "texto": "Pode mandar sua dúvida por e-mail que respondemos rapidinho!" } },
+    { "id": "g", "type": "webhook", "x": 1440, "y": 20, "data": { "url": "" } },
+    { "id": "h", "type": "fim", "x": 1720, "y": 40, "data": {} }
+  ],
+  "edges": [
+    { "from": "a", "port": "out", "to": "b" },
+    { "from": "b", "port": "out", "to": "c" },
+    { "from": "c", "port": "out", "to": "d" },
+    { "from": "d", "port": 0, "to": "e" },
+    { "from": "d", "port": 1, "to": "f" },
+    { "from": "e", "port": "out", "to": "g" },
+    { "from": "g", "port": "out", "to": "h" },
+    { "from": "f", "port": "out", "to": "h" }
+  ]
+}
