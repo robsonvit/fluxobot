@@ -25,11 +25,11 @@
     {
       "id": "nlkzrxj",
       "type": "redirecionar",
-      "x": 680,
-      "y": 470,
+      "x": 740,
+      "y": 430,
       "data": {
         "url": "https://youtu.be/94d-jkd0KkM?si=dg2DdAWNtPEFKPqL",
-        "novaAba": false
+        "novaAba": true
       }
     },
     {
