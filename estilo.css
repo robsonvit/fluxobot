@@ -26,6 +26,10 @@ body { margin: 0; font-family: system-ui, "Segoe UI", Roboto, sans-serif; color:
 .fc-embed { display: block; width: 100%; min-width: 240px; aspect-ratio: 16 / 9; border: 0; border-radius: 12px; }
 /* visualização única (estilo WhatsApp) */
 .fc-chat { position: relative; }
+.fc-audio { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.fc-vel { display: flex; gap: 6px; }
+.fc-vel button { border: 1px solid rgba(0,0,0,.2); background: #fff; color: inherit; border-radius: 999px; padding: 2px 10px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+.fc-vel button.fc-vel-ativa { background: var(--fc-btn-bg, var(--cor)); color: var(--fc-btn-cor, #fff); border-color: transparent; }
 .fc-unica { display: flex; align-items: center; gap: 8px; padding: 10px 14px; }
 .fc-unica-btn { display: flex; align-items: center; gap: 8px; background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; font-weight: 600; }
 .fc-unica-btn svg, .fc-aberta svg { flex: none; }

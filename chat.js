@@ -255,6 +255,31 @@
       d.append(formatar(texto));
     }
 
+    const VELOCIDADES_AUDIO = [[1.5, "1,5x"], [2, "2x"]];
+
+    // Botões de velocidade do áudio; 1,5x vem ativado por padrão.
+    function criarBotoesVelocidade(audio) {
+      const caixa = document.createElement("div");
+      caixa.className = "fc-vel";
+      let atual = VELOCIDADES_AUDIO[0][0];
+      const botoes = VELOCIDADES_AUDIO.map(([valor, rotulo]) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = rotulo;
+        b.onclick = () => { atual = valor; aplicar(); };
+        caixa.append(b);
+        return { b, valor };
+      });
+      function aplicar() {
+        audio.playbackRate = atual;
+        botoes.forEach(({ b, valor }) => b.classList.toggle("fc-vel-ativa", valor === atual));
+      }
+      audio.addEventListener("loadedmetadata", aplicar);
+      audio.addEventListener("play", aplicar);
+      aplicar();
+      return caixa;
+    }
+
     function criarElementoMidia(tipo, link) {
       let el;
       if (tipo === "imagem") {
@@ -264,10 +289,13 @@
         el.onload = rolar;
         el.src = link;
       } else if (tipo === "audio") {
-        el = document.createElement("audio");
-        el.controls = true;
-        el.preload = "metadata";
-        el.src = link;
+        const audio = document.createElement("audio");
+        audio.controls = true;
+        audio.preload = "metadata";
+        audio.src = link;
+        el = document.createElement("div");
+        el.className = "fc-audio";
+        el.append(audio, criarBotoesVelocidade(audio));
       } else {
         const embed = embedDeVideo(link);
         if (embed) {
@@ -309,9 +337,10 @@
       botao.onclick = () => {
         if (tipo === "audio") {
           const el = criarElementoMidia("audio", link);
-          el.autoplay = true;
-          el.controlsList = "nodownload noplaybackrate";
-          el.onended = marcarAberta;
+          const audio = el.querySelector("audio");
+          audio.autoplay = true;
+          audio.controlsList = "nodownload noplaybackrate";
+          audio.onended = marcarAberta;
           d.innerHTML = "";
           d.append(el);
           rolar();
