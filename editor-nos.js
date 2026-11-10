@@ -199,6 +199,7 @@
         campoTexto(ctx, "Endereço do link", no.data.url, set("url"), { placeholder: "https://..." }),
         campoSelecao(ctx, "Abrir em", no.data.novaAba ? "sim" : "nao", (v) => { no.data.novaAba = v === "sim"; },
           [["nao", "Mesma página (encerra o chat)"], ["sim", "Nova aba (o chat continua)"]]),
+        campoTexto(ctx, "Texto do link (vazio = mostra a URL crua)", no.data.texto, set("texto"), { placeholder: "só vale se não vier de botões" }),
       );
     } else if (no.type === "inicio") {
       corpo.append(UI.el("p", "dica-no", "A conversa começa aqui. Arraste a bolinha da direita até o primeiro bloco."));

@@ -345,16 +345,31 @@
       rolar();
     }
 
-    function abrirLink(link, novaAba) {
-      const d = balao("bot", "fc-midia");
+    // Depois de um clique em botão: abre o link na hora, sem balão "Abrir link".
+    // Devolve false se o navegador bloqueou (aí o balão com o link aparece como reserva).
+    function abrirDireto(link, novaAba) {
+      if (novaAba) {
+        const w = global.open(link, "_blank");
+        if (!w) return false;
+        w.opener = null;
+        return true;
+      }
+      global.location.href = link;
+      return true;
+    }
+
+    function abrirLink(link, novaAba, texto, aposBotao) {
+      if (aposBotao && abrirDireto(link, novaAba)) return;
+      // Sem botão antes: balão com o link em texto cru (ou o texto que o usuário escolheu)
+      const d = balao("bot");
       const a = document.createElement("a");
-      a.className = "fc-link";
       a.href = link;
       a.target = novaAba ? "_blank" : "_top";
       a.rel = "noopener noreferrer";
-      a.textContent = "👉 Abrir link";
+      a.textContent = texto || link;
       d.append(a);
       rolar();
+      if (aposBotao) return;
       // Dentro de um iframe o navegador só deixa abrir com clique do visitante: fica o botão.
       const emIframe = global.self !== global.top;
       if (config.semRedirecionar || emIframe) return;
@@ -430,9 +445,12 @@
       registro.inicio();
 
       let passos = 0;
+      let veioDeBotao = false;
       while (no && ativo() && passos++ < MAX_PASSOS) {
         const d = no.data || {};
         let porta = "out";
+        const anteriorEraBotao = veioDeBotao;
+        veioDeBotao = no.type === "botoes";
 
         if (no.type === "mensagem") {
           await aguardar(d);
@@ -470,7 +488,7 @@
         } else if (no.type === "redirecionar") {
           const link = urlSegura(d.url, config.resolverUrl);
           if (link) {
-            abrirLink(link, !!d.novaAba);
+            abrirLink(link, !!d.novaAba, d.texto, anteriorEraBotao);
             registro.passo("link: " + new URL(link).hostname);
             registro.atualizar(respostas);
           }
