@@ -84,8 +84,8 @@
     {
       "id": "ncsbaig",
       "type": "botoes",
-      "x": 2150,
-      "y": 260,
+      "x": 2380,
+      "y": 680,
       "data": {
         "texto": "Gostou??",
         "variavel": "escolha",
@@ -99,9 +99,36 @@
     {
       "id": "nq00z6l",
       "type": "fim",
-      "x": 2410,
-      "y": 410,
+      "x": 2460,
+      "y": 420,
       "data": {}
+    },
+    {
+      "id": "nsgdvjx",
+      "type": "espera",
+      "x": 1520,
+      "y": 890,
+      "data": {
+        "segundos": "5"
+      }
+    },
+    {
+      "id": "nlzq7u4",
+      "type": "espera",
+      "x": 2100,
+      "y": 620,
+      "data": {
+        "segundos": "5"
+      }
+    },
+    {
+      "id": "n4xdavi",
+      "type": "espera",
+      "x": 770,
+      "y": 920,
+      "data": {
+        "segundos": "5"
+      }
     }
   ],
   "edges": [
@@ -116,16 +143,6 @@
       "to": "ndslp6e"
     },
     {
-      "from": "ndslp6e",
-      "port": 0,
-      "to": "nvsn7px"
-    },
-    {
-      "from": "ndslp6e",
-      "port": 1,
-      "to": "nvsn7px"
-    },
-    {
       "from": "nvsn7px",
       "port": 0,
       "to": "nkk7tm5"
@@ -136,21 +153,6 @@
       "to": "ntsupqs"
     },
     {
-      "from": "nkk7tm5",
-      "port": "out",
-      "to": "n5wxxae"
-    },
-    {
-      "from": "ntsupqs",
-      "port": "out",
-      "to": "n5wxxae"
-    },
-    {
-      "from": "n5wxxae",
-      "port": "out",
-      "to": "ncsbaig"
-    },
-    {
       "from": "ncsbaig",
       "port": 0,
       "to": "nq00z6l"
@@ -159,6 +161,46 @@
       "from": "ncsbaig",
       "port": 1,
       "to": "nq00z6l"
+    },
+    {
+      "from": "ntsupqs",
+      "port": "out",
+      "to": "nsgdvjx"
+    },
+    {
+      "from": "nkk7tm5",
+      "port": "out",
+      "to": "nsgdvjx"
+    },
+    {
+      "from": "nsgdvjx",
+      "port": "out",
+      "to": "n5wxxae"
+    },
+    {
+      "from": "n5wxxae",
+      "port": "out",
+      "to": "nlzq7u4"
+    },
+    {
+      "from": "nlzq7u4",
+      "port": "out",
+      "to": "ncsbaig"
+    },
+    {
+      "from": "ndslp6e",
+      "port": 0,
+      "to": "n4xdavi"
+    },
+    {
+      "from": "ndslp6e",
+      "port": 1,
+      "to": "n4xdavi"
+    },
+    {
+      "from": "n4xdavi",
+      "port": "out",
+      "to": "nvsn7px"
     }
   ],
   "tema": {
