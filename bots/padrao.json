@@ -7,61 +7,9 @@
       "x": 40,
       "y": 60,
       "data": {}
-    },
-    {
-      "id": "niivztc",
-      "type": "imagem",
-      "x": 800,
-      "y": 178,
-      "data": {
-        "url": "midias/padrao/1794336908372-479919192-2012922872539768-2032232884289053708-n.jpg",
-        "espera": "4"
-      }
-    },
-    {
-      "id": "njc3i4d",
-      "type": "botoes",
-      "x": 340,
-      "y": 170,
-      "data": {
-        "texto": "Escolha uma opção:",
-        "variavel": "escolha",
-        "opcoes": [
-          "Sim",
-          "Não"
-        ]
-      }
-    },
-    {
-      "id": "nbzc7mv",
-      "type": "fim",
-      "x": 1170,
-      "y": 170,
-      "data": {}
     }
   ],
-  "edges": [
-    {
-      "from": "a",
-      "port": "out",
-      "to": "njc3i4d"
-    },
-    {
-      "from": "njc3i4d",
-      "port": 0,
-      "to": "niivztc"
-    },
-    {
-      "from": "njc3i4d",
-      "port": 1,
-      "to": "niivztc"
-    },
-    {
-      "from": "niivztc",
-      "port": "out",
-      "to": "nbzc7mv"
-    }
-  ],
+  "edges": [],
   "tema": {
     "mostrarBarra": true,
     "corBarra": "#005e54",
