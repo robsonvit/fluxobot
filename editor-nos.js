@@ -122,7 +122,13 @@
       const url = await ctx.enviarArquivo(no.type);
       if (url) { no.data.url = url; ctx.aoMudar(); ctx.redesenhar(); }
     };
-    corpo.append(enviar, campoEspera(ctx, no));
+    corpo.append(
+      enviar,
+      campoSelecao(ctx, "Visualização única (como no WhatsApp)", no.data.visualizacaoUnica ? "sim" : "nao",
+        (v) => { no.data.visualizacaoUnica = v === "sim"; },
+        [["nao", "Não"], ["sim", "Sim: abre só uma vez"]]),
+      campoEspera(ctx, no),
+    );
   }
 
   function corpoDeBotoes(ctx, no, corpo) {

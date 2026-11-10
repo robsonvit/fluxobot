@@ -17,6 +17,8 @@
   }
 
   const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
+  const ROTULO_UNICA = { imagem: "Foto", audio: "Mensagem de voz", video: "Vídeo" };
+  const ICONE_UNICA = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.8"/><text x="12" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor">1</text></svg>';
 
   function numero(valor) {
     if (valor === undefined || valor === null || valor === "") return null;
@@ -241,8 +243,7 @@
       d.append(formatar(texto));
     }
 
-    function adicionarMidia(tipo, link) {
-      const d = balao("bot", "fc-midia");
+    function criarElementoMidia(tipo, link) {
       let el;
       if (tipo === "imagem") {
         el = document.createElement("img");
@@ -271,7 +272,64 @@
           el.src = link;
         }
       }
-      d.append(el);
+      return el;
+    }
+
+    // Visualização única (imita o WhatsApp): só dá para abrir uma vez, depois vira "Aberta".
+    function adicionarMidiaUnica(tipo, link) {
+      const d = balao("bot", "fc-midia fc-unica");
+      const rotulo = ROTULO_UNICA[tipo];
+      const botao = document.createElement("button");
+      botao.type = "button";
+      botao.className = "fc-unica-btn";
+      botao.innerHTML = ICONE_UNICA;
+      botao.append(rotulo);
+      d.append(botao);
+      rolar();
+
+      function marcarAberta() {
+        d.classList.add("fc-aberta");
+        d.innerHTML = ICONE_UNICA;
+        d.append("Aberta");
+        rolar();
+      }
+
+      botao.onclick = () => {
+        if (tipo === "audio") {
+          const el = criarElementoMidia("audio", link);
+          el.autoplay = true;
+          el.controlsList = "nodownload noplaybackrate";
+          el.onended = marcarAberta;
+          d.innerHTML = "";
+          d.append(el);
+          rolar();
+          return;
+        }
+        const visor = document.createElement("div");
+        visor.className = "fc-visor";
+        const fechar = document.createElement("button");
+        fechar.type = "button";
+        fechar.className = "fc-visor-fechar";
+        fechar.setAttribute("aria-label", "Fechar");
+        fechar.textContent = "✕";
+        const fim = () => {
+          document.removeEventListener("keydown", aoTecla);
+          visor.remove();
+          marcarAberta();
+        };
+        const aoTecla = (e) => { if (e.key === "Escape") fim(); };
+        fechar.onclick = fim;
+        visor.onclick = (e) => { if (e.target === visor) fim(); };
+        document.addEventListener("keydown", aoTecla);
+        visor.append(fechar, criarElementoMidia(tipo, link));
+        raiz.append(visor);
+      };
+    }
+
+    function adicionarMidia(tipo, link, unica) {
+      if (unica) { adicionarMidiaUnica(tipo, link); return; }
+      const d = balao("bot", "fc-midia");
+      d.append(criarElementoMidia(tipo, link));
       rolar();
     }
 
@@ -372,7 +430,7 @@
           await aguardar(d);
           if (!ativo()) return;
           const link = urlSegura(d.url, config.resolverUrl);
-          if (link) adicionarMidia(no.type, link);
+          if (link) adicionarMidia(no.type, link, d.visualizacaoUnica === true);
           else adicionar("[arquivo indisponível]", "bot");
         } else if (no.type === "pergunta") {
           await aguardar(d);
