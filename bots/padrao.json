@@ -80,6 +80,20 @@
         "espera": "10",
         "visualizacaoUnica": true
       }
+    },
+    {
+      "id": "ncsbaig",
+      "type": "botoes",
+      "x": 2150,
+      "y": 260,
+      "data": {
+        "texto": "Gostou??",
+        "variavel": "escolha",
+        "opcoes": [
+          "Sim",
+          "Não"
+        ]
+      }
     }
   ],
   "edges": [
@@ -122,6 +136,11 @@
       "from": "ntsupqs",
       "port": "out",
       "to": "n5wxxae"
+    },
+    {
+      "from": "n5wxxae",
+      "port": "out",
+      "to": "ncsbaig"
     }
   ],
   "tema": {
@@ -135,6 +154,6 @@
     "corBotao": "#00a884",
     "corTextoBotao": "#ffffff",
     "nome": "Gaby Soares ",
-    "foto": "midias/padrao/1794339717294-479919192-2012922872539768-2032232884289053708-n.jpg"
+    "foto": "midias/padrao/1794347795616-3733939838534561389-3733939829491678014.jpg"
   }
 }
