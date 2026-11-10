@@ -38,7 +38,8 @@
       "x": 660,
       "y": 700,
       "data": {
-        "url": "midias/padrao/1794350682632-tati-silva-s-video-jan-13-2026.mp3"
+        "url": "midias/padrao/1794350682632-tati-silva-s-video-jan-13-2026.mp3",
+        "visualizacaoUnica": true
       }
     }
   ],
