@@ -44,10 +44,19 @@
       "- Repository access: Only select repositories > fluxobot\n" +
       "- Permissions > Contents: Read and write"
     );
-    const limpo = (t || "").trim();
+    const limpo = (t || "").replace(/\s+/g, "");
     if (!limpo) return null;
+    if (!tokenValido(limpo)) {
+      alert("Esse texto não parece um token do GitHub (tem caracteres inválidos). Copie de novo, só o token.");
+      return null;
+    }
     guardar(CHAVE_TOKEN, limpo);
     return limpo;
+  }
+
+  // Tokens do GitHub só têm letras, números e _ (começam com ghp_ ou github_pat_)
+  function tokenValido(t) {
+    return /^[A-Za-z0-9_]{20,}$/.test(t);
   }
 
   function paraBase64(texto) {
@@ -106,7 +115,9 @@
 
   /* ---------- Salvar ---------- */
   async function salvarNoGithub() {
-    const token = guardado(CHAVE_TOKEN) || pedirToken();
+    let token = guardado(CHAVE_TOKEN);
+    if (token && !tokenValido(token)) { apagar(CHAVE_TOKEN); token = null; } // token guardado estragado
+    token = token || pedirToken();
     if (!token) { mostrar("Salvar cancelado."); return; }
 
     const url = urlApi(`${PASTA}/${botAtual}.json`);
@@ -130,7 +141,8 @@
       mostrar("✔ Salvo! O chat público atualiza em ~1 minuto.");
       listarBots();
     } catch (e) {
-      mostrar("✖ " + e.message);
+      if (e instanceof TypeError) apagar(CHAVE_TOKEN); // falha de rede/formato: descarta o token para colar de novo
+      mostrar("✖ " + e.message + (e instanceof TypeError ? " Token apagado: clique em Salvar e cole de novo." : ""));
     } finally {
       btnSalvar.disabled = false;
     }
