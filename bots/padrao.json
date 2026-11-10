@@ -23,8 +23,8 @@
     {
       "id": "ndslp6e",
       "type": "botoes",
-      "x": 700,
-      "y": 210,
+      "x": 400,
+      "y": 690,
       "data": {
         "texto": "{{resposta}}, tudo bem com vc??",
         "variavel": "escolha",
@@ -129,14 +129,18 @@
       "data": {
         "segundos": "5"
       }
+    },
+    {
+      "id": "n88u3y3",
+      "type": "espera",
+      "x": 30,
+      "y": 430,
+      "data": {
+        "segundos": "10"
+      }
     }
   ],
   "edges": [
-    {
-      "from": "a",
-      "port": "out",
-      "to": "n4q7y28"
-    },
     {
       "from": "n4q7y28",
       "port": "out",
@@ -201,9 +205,21 @@
       "from": "n4xdavi",
       "port": "out",
       "to": "nvsn7px"
+    },
+    {
+      "from": "n88u3y3",
+      "port": "out",
+      "to": "n4q7y28"
+    },
+    {
+      "from": "a",
+      "port": "out",
+      "to": "n88u3y3"
     }
   ],
   "tema": {
+    "nome": "Gaby Soares ",
+    "foto": "midias/padrao/1794348071017-2459817851344929859-2459817847897291515.jpg",
     "mostrarBarra": true,
     "corBarra": "#005e54",
     "corFundo": "#ece5dd",
@@ -212,8 +228,6 @@
     "corBalaoUsuario": "#dcf8c6",
     "corTextoUsuario": "#111b21",
     "corBotao": "#00a884",
-    "corTextoBotao": "#ffffff",
-    "nome": "Gaby Soares ",
-    "foto": "midias/padrao/1794348071017-2459817851344929859-2459817847897291515.jpg"
+    "corTextoBotao": "#ffffff"
   }
 }
