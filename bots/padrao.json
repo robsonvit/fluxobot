@@ -95,6 +95,13 @@
         ],
         "espera": "10"
       }
+    },
+    {
+      "id": "nq00z6l",
+      "type": "fim",
+      "x": 2410,
+      "y": 410,
+      "data": {}
     }
   ],
   "edges": [
@@ -142,6 +149,16 @@
       "from": "n5wxxae",
       "port": "out",
       "to": "ncsbaig"
+    },
+    {
+      "from": "ncsbaig",
+      "port": 0,
+      "to": "nq00z6l"
+    },
+    {
+      "from": "ncsbaig",
+      "port": 1,
+      "to": "nq00z6l"
     }
   ],
   "tema": {
