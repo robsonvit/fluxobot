@@ -9,15 +9,6 @@
       "data": {}
     },
     {
-      "id": "g",
-      "type": "webhook",
-      "x": 1283,
-      "y": 106,
-      "data": {
-        "url": "https://script.google.com/macros/s/AKfycbzMxBU2bsqeeUBsnJRnlfQd2Q8KD4MxMkoAQrZoHDtXGF5vnNKN4mGsI4q9qhNAgeN3/exec"
-      }
-    },
-    {
       "id": "niivztc",
       "type": "imagem",
       "x": 800,
@@ -31,7 +22,7 @@
       "id": "njc3i4d",
       "type": "botoes",
       "x": 340,
-      "y": 297,
+      "y": 170,
       "data": {
         "texto": "Escolha uma opção:",
         "variavel": "escolha",
@@ -40,6 +31,13 @@
           "Não"
         ]
       }
+    },
+    {
+      "id": "nbzc7mv",
+      "type": "fim",
+      "x": 1170,
+      "y": 170,
+      "data": {}
     }
   ],
   "edges": [
@@ -61,7 +59,7 @@
     {
       "from": "niivztc",
       "port": "out",
-      "to": "g"
+      "to": "nbzc7mv"
     }
   ],
   "tema": {
