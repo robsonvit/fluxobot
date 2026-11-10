@@ -13,9 +13,16 @@
     // Cada bot é um arquivo em bots/. Use chat.html?f=nome-do-bot (sem ?f usa o bot "padrao")
     const nome = new URLSearchParams(location.search).get("f") || "padrao";
     const seguro = /^[\w-]+$/.test(nome) ? nome : "padrao";
-    fetch("bots/" + seguro + ".json")
-      .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then((fluxo) => FluxoChat.executar(fluxo, document.getElementById("chat")))
+    const lerJson = (url) => fetch(url).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); });
+
+    // config.json guarda o endereço da planilha (registro automático de acessos e respostas)
+    const configuracao = lerJson("config.json?v=" + Date.now()).catch(() => ({}));
+
+    Promise.all([lerJson("bots/" + seguro + ".json"), configuracao])
+      .then(([fluxo, cfg]) => {
+        const registroUrl = cfg && cfg.rastreio && cfg.planilha ? cfg.planilha : null;
+        FluxoChat.executar(fluxo, document.getElementById("chat"), { registroUrl });
+      })
       .catch(() => { document.getElementById("chat").textContent = "Não consegui carregar o fluxo."; });
   </script>
 </body>

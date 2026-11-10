@@ -5,48 +5,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FluxoBot - Editor</title>
   <link rel="stylesheet" href="estilo.css">
+  <link rel="stylesheet" href="editor.css">
 </head>
 <body class="editor">
-  <div class="barra">
-    <h1>FluxoBot</h1>
-    <input type="text" id="nome" placeholder="Nome do fluxo" title="Nome do fluxo">
-    <span class="sep"></span>
-    <button data-add="mensagem">+ Mensagem</button>
-    <button data-add="pergunta">+ Pergunta</button>
-    <button data-add="botoes">+ Botões</button>
-    <button data-add="imagem">+ Imagem</button>
-    <button data-add="audio">+ Áudio</button>
-    <button data-add="video">+ Vídeo</button>
-    <button data-add="espera">+ Pausa</button>
-    <button data-add="redirecionar">+ Link</button>
-    <button data-add="webhook">+ Enviar dados</button>
-    <button data-add="fim">+ Fim</button>
-    <span class="sep"></span>
-    <button id="btn-testar" class="principal">▶ Testar</button>
-    <button id="btn-tema">🎨 Aparência</button>
-    <select id="sel-bot" title="Escolha o bot"></select>
-    <button id="btn-novo-bot">+ Novo bot</button>
-    <button id="btn-link">🔗 Copiar link</button>
-    <button id="btn-salvar" class="principal">💾 Salvar</button>
-    <button id="btn-carregar">☁ Recarregar</button>
-    <span id="status" class="dica" style="margin-left:0"></span>
-    <button id="btn-baixar">⬇ Baixar fluxo.json</button>
-    <label class="btn" title="Aceita fluxos do FluxoBot e exportados do Typebot">⬆ Importar .json<input type="file" id="arquivo" accept=".json" hidden></label>
-    <button id="btn-novo">Novo exemplo</button>
-    <span class="dica">Clique na bolinha da direita e depois na da esquerda de outro bloco para ligar. Clique na linha para apagar.</span>
-  </div>
-  <div class="area">
-    <div id="canvas"><div id="quadro"><svg id="linhas"></svg></div></div>
+  <header class="topo">
+    <div class="marca">
+      <span class="logo" id="logo"></span>
+      <span class="marca-nome">FluxoBot</span>
+    </div>
+    <div class="seletor-bot">
+      <select id="sel-bot" title="Escolha o bot"></select>
+      <input type="text" id="nome" placeholder="Nome do bot" title="Nome do bot (também é o nome da aba na planilha)">
+    </div>
+    <span id="estado" class="estado"></span>
+    <button type="button" id="stats" class="stats" title="Acessos deste bot (clique para atualizar)" hidden></button>
+    <span class="espaco"></span>
+    <div class="grupo">
+      <button type="button" id="btn-desfazer" class="ico" title="Desfazer (Ctrl+Z)"></button>
+      <button type="button" id="btn-refazer" class="ico" title="Refazer (Ctrl+Y)"></button>
+    </div>
+    <button type="button" id="btn-tema" class="sec"></button>
+    <button type="button" id="btn-testar" class="sec"></button>
+    <button type="button" id="btn-salvar" class="prim"></button>
+    <button type="button" id="btn-menu" class="ico" title="Mais opções"></button>
+  </header>
+
+  <div class="corpo">
+    <aside id="paleta"></aside>
+
+    <main id="area">
+      <div id="canvas"><div id="palco"><div id="quadro"><svg id="linhas"></svg></div></div></div>
+      <div class="controles-zoom">
+        <button type="button" id="zoom-menos" title="Diminuir"></button>
+        <span id="zoom-valor">100%</span>
+        <button type="button" id="zoom-mais" title="Aumentar"></button>
+        <span class="sep"></span>
+        <button type="button" id="zoom-ajustar" title="Mostrar tudo"></button>
+        <button type="button" id="btn-organizar" title="Organizar blocos automaticamente"></button>
+      </div>
+      <div class="dica-atalhos">
+        <span><b>Ligar:</b> arraste a bolinha até outro bloco</span>
+        <span><b>Vários:</b> Shift + arrastar</span>
+        <span><b>Zoom:</b> Ctrl + roda</span>
+        <span><b>Duplicar:</b> Ctrl+D</span>
+      </div>
+    </main>
+
     <aside id="tema"></aside>
     <aside id="teste">
-      <div class="topo"><span>Teste do chat</span><span><button id="btn-reiniciar" title="Reiniciar">↻</button><button id="btn-fechar">✕</button></span></div>
+      <div class="topo-painel">
+        <span>Teste do chat</span>
+        <span class="acoes-painel">
+          <button type="button" id="btn-reiniciar" title="Reiniciar a conversa"></button>
+          <button type="button" id="btn-fechar" title="Fechar"></button>
+        </span>
+      </div>
       <div id="conversa"></div>
     </aside>
   </div>
+
+  <input type="file" id="arquivo" accept=".json" hidden>
+  <div id="toasts" aria-live="polite"></div>
+
+  <script src="ui.js"></script>
   <script src="chat.js"></script>
   <script src="importar-typebot.js"></script>
+  <script src="editor-nos.js"></script>
+  <script>
+    // Ícones dos botões fixos da barra
+    (function () {
+      const icone = (id, nome, texto, tam) => {
+        const b = document.getElementById(id);
+        b.insertAdjacentHTML("afterbegin", UI.icone(nome, tam || 18));
+        if (texto) b.append(UI.el("span", "", texto));
+      };
+      document.getElementById("logo").innerHTML = UI.icone("mensagem", 18);
+      icone("btn-desfazer", "desfazer");
+      icone("btn-refazer", "refazer");
+      icone("btn-tema", "paleta", "Aparência");
+      icone("btn-testar", "testar", "Testar", 16);
+      icone("btn-salvar", "salvar", "Salvar");
+      icone("btn-menu", "mais");
+      icone("zoom-menos", "menos", "", 16);
+      icone("zoom-mais", "mais1", "", 16);
+      icone("zoom-ajustar", "ajustar", "", 16);
+      icone("btn-organizar", "organizar", "", 16);
+      icone("btn-reiniciar", "reiniciar", "", 16);
+      icone("btn-fechar", "x", "", 16);
+    })();
+  </script>
   <script src="editor.js"></script>
-  <script src="salvar-github.js"></script>
+  <script src="bots.js"></script>
   <script src="tema.js"></script>
 </body>
 </html>

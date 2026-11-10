@@ -1,76 +1,63 @@
 # FluxoBot
 
 Um "Typebot" grátis em português: você monta a conversa arrastando blocos e o chat roda em qualquer site.
+Tudo roda de graça no GitHub Pages (o seu computador não precisa ficar ligado).
 
-## Como usar
+- **Editor:** `https://SEU-USUARIO.github.io/SEU-REPO/`
+- **Chat de um bot:** `https://SEU-USUARIO.github.io/SEU-REPO/chat.html?f=nome-do-bot`
 
-1. **Editor:** abra `index.html` (ou o site publicado). Arraste os blocos, edite os textos e ligue-os.
-   - Para ligar: clique na bolinha da **direita** de um bloco e depois na bolinha da **esquerda** de outro.
-   - Para apagar uma ligação: clique na linha.
-2. **Testar:** botão **▶ Testar**.
-3. **Salvar:** botão **⬇ Baixar fluxo.json** e ou, melhor, use o botão **💾 Salvar** (grava em `bots/NOME.json`).
-4. **Chat público:** `https://SEU-USUARIO.github.io/SEU-REPO/chat.html`
-   - Outro bot: use **+ Novo bot** no editor e abra `chat.html?f=nome-do-bot`.
+## Usando o editor
 
-## Colocar o chat no seu site
+| O quê | Como |
+|---|---|
+| Adicionar bloco | Clique no bloco da lateral, **arraste** para a tela ou clique com o botão direito na tela |
+| Ligar blocos | **Arraste a bolinha** da direita até outro bloco. Se soltar no vazio, abre o menu para criar o próximo bloco já ligado |
+| Remover ligação | Passe o mouse na linha e clique no **×** |
+| Duplicar / excluir | Ícones que aparecem acima do bloco, botão direito, ou **Ctrl+D** / **Delete** |
+| Selecionar vários | **Shift + arrastar** na tela (ou Shift + clique nos blocos) |
+| Desfazer / refazer | **Ctrl+Z** / **Ctrl+Y** |
+| Zoom | **Ctrl + roda do mouse** ou os botões no canto da tela. O botão de grade organiza os blocos sozinho |
+| Salvar | **Ctrl+S** ou o botão **Salvar** (grava direto no GitHub; na primeira vez pede o token) |
 
-```html
-<iframe src="https://SEU-USUARIO.github.io/SEU-REPO/chat.html"
-        style="width:100%;max-width:420px;height:600px;border:0;border-radius:12px"></iframe>
-```
-
-## Guardar as respostas numa planilha (grátis)
-
-1. Crie uma planilha no Google Sheets > **Extensões > Apps Script**.
-2. Cole o conteúdo de `apps-script.gs`.
-3. **Implantar > Nova implantação > App da Web**, acesso "Qualquer pessoa". Copie a URL.
-4. No editor, cole a URL no bloco **Enviar dados** e baixe o `fluxo.json` de novo.
-
-## Publicar de graça (GitHub Pages + Actions)
-
-1. Crie um repositório **público** no GitHub e envie estes arquivos.
-2. Em **Settings > Pages**, escolha **Source: GitHub Actions**.
-3. O arquivo `.github/workflows/pages.yml` publica o site a cada alteração.
+No menu **⋯**: novo bot, **duplicar bot**, **excluir bot**, importar `.json` (FluxoBot ou **Typebot**),
+baixar `.json`, copiar o link do chat e configurar a planilha.
 
 ## Blocos
 
-| Bloco | O que faz |
-|---|---|
-| Mensagem | O bot fala. Use `{{variavel}}` para usar respostas anteriores |
-| Pergunta | Pede texto, e-mail, número ou telefone e guarda numa variável |
-| Botões | Mostra opções; cada opção leva a um caminho |
-| Enviar dados | Manda todas as respostas para uma URL (planilha, Zapier-like, etc.) |
-| Fim | Termina a conversa |
+Mensagem, Imagem, Áudio, Vídeo, Pergunta (texto, e-mail, número, telefone), Botões (cada opção leva a um caminho),
+Pausa, Abrir link e Fim. Texto aceita `*negrito*`, `_itálico_`, `~riscado~` e `{{variavel}}`.
+Cada bloco tem "Esperar antes" (segundos) e mostra "digitando..." durante a espera.
 
-## Ideias para depois
+### Imagens, áudios e vídeos
+- **Link público** (`https://...`). Links do YouTube e do Vimeo viram player.
+- **📎 Enviar do PC:** o arquivo vai para a pasta `midias/` do repositório (máximo 25 MB).
 
-- Bloco de IA (Gemini/Groq, planos grátis, via Cloudflare Worker para esconder a chave)
-- Bot no Telegram (grátis) usando o mesmo fluxo
-- Aviso por e-mail/Telegram a cada novo lead
-- Bloco de condição (se/senão)
+## 🎨 Aparência
+Modelos **Padrão** e **WhatsApp**, barra de contato (foto, nome, "online"), cores e papel de parede,
+com prévia ao vivo. Cada bot tem a sua.
+
+## Registro automático na planilha (e contador de acessos)
+
+Não existe mais bloco "Enviar dados": **todos os bots registram sozinhos**.
+
+- Cada bot ganha uma **aba** (com o nome do bot) e **cada visitante vira uma linha**, mesmo que não responda nada.
+- Colunas: `data`, `sessao`, `origem` (utm_source ou site de origem), `caminho` (botões clicados e links abertos),
+  `concluiu` e uma coluna para cada variável (respostas).
+- A aba **📊 Resumo** conta `acessos` (cada pessoa que abre o chat) e `concluidos` por bot. O editor mostra esses
+  números ao lado do nome do bot.
+- O teste dentro do editor **não** registra nada.
+
+### Instalar / atualizar o script
+1. Na planilha: **Extensões > Apps Script**, apague o código antigo e cole o de `apps-script.gs`.
+2. **Implantar > Gerenciar implantações > lápis > Versão: Nova versão > Implantar**
+   (primeira vez: Nova implantação > App da Web, executar como **Eu**, acesso **Qualquer pessoa**).
+3. O endereço (`.../exec`) fica em `config.json` (`"rastreio": true` liga o registro). Também dá para trocar em **⋯ > Planilha e acessos**.
 
 ## Importar do Typebot
+No Typebot: menu do bot > **Share > Export**. No FluxoBot: **⋯ > Importar .json**. Entram textos, esperas, botões,
+perguntas, imagem, áudio, vídeo, links e a aparência (inclusive a barra de contato). O que não é suportado
+(condições, variáveis, integrações) é ignorado e listado no aviso.
 
-1. No Typebot: menu do bot > **Share > Export** (baixa um `.json`).
-2. No FluxoBot: **⬆ Importar .json**, escolha o arquivo e dê um nome ao bot novo.
-3. Revise, teste e clique em **💾 Salvar**.
-
-Entram: textos (negrito/itálico), esperas (viram "Esperar antes" de cada bloco), botões, perguntas
-(texto, e-mail, número, telefone), imagem, áudio, vídeo e links. O que não é suportado
-(ex.: condições, variáveis, integrações) é ignorado e aparece listado no aviso da importação.
-A aparência (cores, foto, nome e a barra de contato estilo WhatsApp) também é importada.
-
-## Imagens, áudios e vídeos
-
-- **Link público:** cole o endereço (`https://...`). Vídeos do YouTube e Vimeo viram player.
-- **Arquivo do seu PC (mais fácil):** no bloco, clique em **📎 Enviar do PC**. O arquivo vai para a pasta
-  `midias/` do repositório e funciona sem depender de outro site. Limite: 25 MB por arquivo
-  (para vídeos maiores, use YouTube/Vimeo).
-- Texto: `*negrito*`, `_itálico_`, `~riscado~` e `{{variavel}}`.
-
-## Aparência do chat (🎨)
-
-Clique em **🎨 Aparência** no editor. Escolha um modelo (**Padrão** ou **💬 WhatsApp**) e ajuste:
-barra de contato (foto, nome, "online"), cores dos balões, do texto, dos botões e do fundo, e uma
-imagem de papel de parede. A prévia muda ao vivo no painel de teste. Cada bot tem a sua aparência;
-ela é salva junto com o bot ao clicar em **💾 Salvar**.
+## Publicar (GitHub Pages)
+Repositório **público** > Settings > Pages > Source: **GitHub Actions**. O arquivo `.github/workflows/pages.yml`
+publica o site a cada alteração.

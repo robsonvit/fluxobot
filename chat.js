@@ -92,19 +92,49 @@
     telefone: "Digite um telefone com DDD.",
   };
 
-  async function enviarWebhook(url, fluxo, respostas) {
-    if (!url) return;
+  /* Compatibilidade: bots antigos com o bloco "Enviar dados" continuam gravando enquanto o
+     registro automático (config.json > rastreio) estiver desligado. */
+  async function enviarWebhookLegado(url, fluxo, respostas) {
     try {
-      // text/plain + no-cors evita bloqueio (CORS) no Google Apps Script
       await fetch(url, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain" },
+        method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" },
         body: JSON.stringify({ fluxo: fluxo.nome || "fluxo", respostas, data: new Date().toISOString() }),
       });
-    } catch (e) {
-      console.error("Falha ao enviar webhook:", e);
-    }
+    } catch (e) { /* sem internet: ignora */ }
+  }
+
+  /* Registro automático na planilha: cada visitante vira uma linha (mesmo que não responda nada).
+     Eventos: "inicio" (conta um acesso), "atualizar" (a cada resposta/escolha) e "fim" (concluiu).
+     Só funciona fora do editor e quando config.registroUrl está definido. */
+  function criarRegistrador(fluxo, config) {
+    const url = config.registroUrl;
+    if (!url || config.semRegistro) return { inicio() {}, passo() {}, atualizar() {}, fim() {} };
+    const sessao = (global.crypto && global.crypto.randomUUID)
+      ? global.crypto.randomUUID()
+      : "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+    const caminho = [];
+    let origem = "direto";
+    try {
+      const q = new URLSearchParams(location.search);
+      origem = q.get("utm_source") || (document.referrer ? new URL(document.referrer).hostname : "direto");
+    } catch (e) { /* mantém "direto" */ }
+    let fila = Promise.resolve(); // garante a ordem dos envios
+    const enviar = (evento, respostas) => {
+      const corpo = JSON.stringify({
+        evento, sessao, fluxo: fluxo.nome || "bot", data: new Date().toISOString(),
+        origem, caminho: caminho.join(" > "), respostas,
+      });
+      // text/plain + no-cors evita bloqueio (CORS) no Google Apps Script
+      fila = fila.then(() => fetch(url, {
+        method: "POST", mode: "no-cors", keepalive: true, headers: { "Content-Type": "text/plain" }, body: corpo,
+      }).catch(() => { /* sem internet: ignora */ }));
+    };
+    return {
+      inicio: () => enviar("inicio", {}),
+      passo: (texto) => { caminho.push(texto); },
+      atualizar: (respostas) => enviar("atualizar", respostas),
+      fim: (respostas) => enviar("fim", respostas),
+    };
   }
 
   /* ---------- Tema (aparência) ---------- */
@@ -169,6 +199,8 @@
       if (COR_VALIDA.test(t[chave] || "")) raiz.style.setProperty(variavel, t[chave]);
       else raiz.style.removeProperty(variavel);
     });
+    // Botão colorido sem cor de texto definida: usa branco para ficar legível
+    if (COR_VALIDA.test(t.corBotao || "") && !COR_VALIDA.test(t.corTextoBotao || "")) raiz.style.setProperty("--fc-btn-cor", "#ffffff");
     const msgs = raiz.querySelector(".fc-msgs");
     if (msgs) {
       const img = t.fundoImagem ? urlSegura(t.fundoImagem, config && config.resolverUrl) : null;
@@ -318,9 +350,11 @@
 
     async function rodar() {
       const respostas = {};
+      const registro = criarRegistrador(fluxo, config);
       let no = fluxo.nodes.find((n) => n.type === "inicio");
       no = no ? proximoNo(fluxo, no.id, "out") : null;
       if (!no) { adicionar("Este fluxo ainda está vazio.", "bot"); return; }
+      registro.inicio();
 
       let passos = 0;
       while (no && ativo() && passos++ < MAX_PASSOS) {
@@ -343,7 +377,8 @@
           if (d.texto) adicionar(interpolar(d.texto, respostas), "bot");
           const valor = await pedirTexto(d.tipo || "texto");
           if (!ativo()) return;
-          if (d.variavel) respostas[d.variavel] = valor;
+          respostas[d.variavel || "pergunta_" + no.id] = valor;
+          registro.atualizar(respostas);
         } else if (no.type === "botoes") {
           await aguardar(d);
           if (!ativo()) return;
@@ -353,22 +388,32 @@
             const i = await pedirBotao(lista);
             if (!ativo()) return;
             if (d.variavel) respostas[d.variavel] = lista[i];
+            registro.passo(lista[i]);
+            registro.atualizar(respostas);
             porta = i;
           }
         } else if (no.type === "espera") {
           await esperar(Math.min((numero(d.segundos) || 0) * 1000, ESPERA_MAXIMA_MS));
         } else if (no.type === "redirecionar") {
           const link = urlSegura(d.url, config.resolverUrl);
-          if (link) abrirLink(link, !!d.novaAba);
+          if (link) {
+            abrirLink(link, !!d.novaAba);
+            registro.passo("link: " + new URL(link).hostname);
+            registro.atualizar(respostas);
+          }
           if (!d.novaAba) break;
         } else if (no.type === "webhook") {
-          await enviarWebhook(d.url, fluxo, respostas);
+          // bloco antigo "Enviar dados": com o registro automático ligado ele só segue em frente
+          if (!config.registroUrl && !config.semRegistro && d.url) await enviarWebhookLegado(d.url, fluxo, respostas);
         } else if (no.type === "fim") {
           break;
         }
         no = proximoNo(fluxo, no.id, porta);
       }
-      if (ativo()) entrada.innerHTML = "";
+      if (ativo()) {
+        entrada.innerHTML = "";
+        registro.fim(respostas);
+      }
     }
 
     rodar();

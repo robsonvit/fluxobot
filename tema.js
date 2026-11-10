@@ -157,7 +157,7 @@
   }
 
   function abrir() {
-    if (!conversa().classList.contains("fc-chat")) document.getElementById("btn-testar").click();
+    window.FluxoEditor.iniciarTeste(); // a prévia sempre reflete o bot atual
     desenhar();
     painel.classList.add("aberto");
   }
