@@ -13,6 +13,9 @@ body { margin: 0; font-family: system-ui, "Segoe UI", Roboto, sans-serif; color:
 .fc-entrada input { flex: 1; padding: 10px 12px; border: 1px solid var(--borda); border-radius: 10px; font-size: 15px; }
 .fc-entrada button { background: var(--fc-btn-bg, var(--cor)); color: var(--fc-btn-cor, #fff); border: 0; padding: 10px 16px; border-radius: 10px; font-size: 15px; cursor: pointer; }
 .fc-botoes { display: flex; flex-wrap: wrap; gap: 8px; }
+.fc-msgs .fc-botoes { align-self: flex-end; justify-content: flex-end; max-width: 92%; margin-top: 2px; }
+.fc-entrada:empty { display: none; }
+.fc-entrada { padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
 .fc-botoes button { background: var(--fc-btn-bg, #fff); color: var(--fc-btn-cor, var(--cor)); border: 2px solid var(--fc-btn-bg, var(--cor)); padding: 10px 16px; border-radius: 10px; font-size: 15px; cursor: pointer; }
 .fc-botoes button:hover { background: var(--fc-btn-bg, var(--cor)); color: var(--fc-btn-cor, #fff); filter: brightness(.92); }
 
@@ -39,5 +42,5 @@ body { margin: 0; font-family: system-ui, "Segoe UI", Roboto, sans-serif; color:
 .fc-acoes { display: flex; gap: 18px; align-items: center; }
 
 /* Página do chat */
-body.pagina-chat { height: 100vh; margin: 0; }
+body.pagina-chat { height: 100vh; height: 100dvh; margin: 0; }
 body.pagina-chat #chat { height: 100%; max-width: 520px; margin: 0 auto; }

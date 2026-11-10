@@ -333,19 +333,21 @@
     function pedirBotao(opcoesBotao) {
       return new Promise((resolve) => {
         entrada.innerHTML = "";
+        // Os botões ficam logo abaixo da mensagem (dentro da conversa), sempre à vista no celular
         const caixa = document.createElement("div");
         caixa.className = "fc-botoes";
         opcoesBotao.forEach((rotulo, i) => {
           const b = document.createElement("button");
           b.textContent = rotulo;
           b.onclick = () => {
-            entrada.innerHTML = "";
+            caixa.remove();
             adicionar(rotulo, "user");
             resolve(i);
           };
           caixa.append(b);
         });
-        entrada.append(caixa);
+        mensagens.append(caixa);
+        rolar();
       });
     }
 
