@@ -4,12 +4,133 @@
     {
       "id": "a",
       "type": "inicio",
-      "x": 40,
-      "y": 60,
+      "x": 10,
+      "y": 180,
       "data": {}
+    },
+    {
+      "id": "n4q7y28",
+      "type": "pergunta",
+      "x": 350,
+      "y": 200,
+      "data": {
+        "texto": "Oiii, como é seu nome? 🙈",
+        "variavel": "resposta",
+        "tipo": "texto",
+        "espera": "5"
+      }
+    },
+    {
+      "id": "ndslp6e",
+      "type": "botoes",
+      "x": 700,
+      "y": 210,
+      "data": {
+        "texto": "{{resposta}}, tudo bem com vc??",
+        "variavel": "escolha",
+        "opcoes": [
+          "Sim",
+          "Não"
+        ],
+        "espera": "5"
+      }
+    },
+    {
+      "id": "nvsn7px",
+      "type": "botoes",
+      "x": 1040,
+      "y": 220,
+      "data": {
+        "texto": "Posso te mandar um presente 🎁 em agradecimento por ter me seguido??",
+        "variavel": "escolha",
+        "opcoes": [
+          "Sim",
+          "Não"
+        ],
+        "espera": "5"
+      }
+    },
+    {
+      "id": "nkk7tm5",
+      "type": "mensagem",
+      "x": 1400,
+      "y": 240,
+      "data": {
+        "texto": "Ok, vou acabar de me enxugar do banho e te mando 😚😚",
+        "espera": "5"
+      }
+    },
+    {
+      "id": "ntsupqs",
+      "type": "mensagem",
+      "x": 1400,
+      "y": 520,
+      "data": {
+        "texto": "Entendi, vou te mandar mesmo assim, se mudar de ideia fique p ver 👀😊",
+        "espera": "5"
+      }
+    },
+    {
+      "id": "n5wxxae",
+      "type": "imagem",
+      "x": 1780,
+      "y": 250,
+      "data": {
+        "url": "midias/padrao/1794346861110-img-848.jpg"
+      }
+    },
+    {
+      "id": "nyhsv50",
+      "type": "imagem",
+      "x": 1780,
+      "y": 540,
+      "data": {
+        "url": ""
+      }
     }
   ],
-  "edges": [],
+  "edges": [
+    {
+      "from": "a",
+      "port": "out",
+      "to": "n4q7y28"
+    },
+    {
+      "from": "n4q7y28",
+      "port": "out",
+      "to": "ndslp6e"
+    },
+    {
+      "from": "ndslp6e",
+      "port": 0,
+      "to": "nvsn7px"
+    },
+    {
+      "from": "ndslp6e",
+      "port": 1,
+      "to": "nvsn7px"
+    },
+    {
+      "from": "nvsn7px",
+      "port": 0,
+      "to": "nkk7tm5"
+    },
+    {
+      "from": "nvsn7px",
+      "port": 1,
+      "to": "ntsupqs"
+    },
+    {
+      "from": "nkk7tm5",
+      "port": "out",
+      "to": "n5wxxae"
+    },
+    {
+      "from": "ntsupqs",
+      "port": "out",
+      "to": "nyhsv50"
+    }
+  ],
   "tema": {
     "mostrarBarra": true,
     "corBarra": "#005e54",
