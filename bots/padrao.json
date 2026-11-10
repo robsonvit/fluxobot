@@ -25,7 +25,7 @@
     {
       "id": "nlkzrxj",
       "type": "redirecionar",
-      "x": 630,
+      "x": 680,
       "y": 470,
       "data": {
         "url": "https://youtu.be/94d-jkd0KkM?si=dg2DdAWNtPEFKPqL",
@@ -35,8 +35,8 @@
     {
       "id": "nv05s5y",
       "type": "audio",
-      "x": 660,
-      "y": 700,
+      "x": 700,
+      "y": 720,
       "data": {
         "url": "midias/padrao/1794350682632-tati-silva-s-video-jan-13-2026.mp3",
         "visualizacaoUnica": true
