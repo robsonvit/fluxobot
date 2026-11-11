@@ -7,59 +7,9 @@
       "x": 10,
       "y": 180,
       "data": {}
-    },
-    {
-      "id": "nrt1s9p",
-      "type": "botoes",
-      "x": 350,
-      "y": 320,
-      "data": {
-        "texto": "Escolha uma opção:",
-        "variavel": "escolha",
-        "opcoes": [
-          "Sim",
-          "Não"
-        ]
-      }
-    },
-    {
-      "id": "nlkzrxj",
-      "type": "redirecionar",
-      "x": 740,
-      "y": 430,
-      "data": {
-        "url": "https://youtu.be/94d-jkd0KkM?si=dg2DdAWNtPEFKPqL",
-        "novaAba": true
-      }
-    },
-    {
-      "id": "nv05s5y",
-      "type": "audio",
-      "x": 700,
-      "y": 720,
-      "data": {
-        "url": "midias/padrao/1794350682632-tati-silva-s-video-jan-13-2026.mp3",
-        "visualizacaoUnica": true
-      }
     }
   ],
-  "edges": [
-    {
-      "from": "a",
-      "port": "out",
-      "to": "nrt1s9p"
-    },
-    {
-      "from": "nrt1s9p",
-      "port": 0,
-      "to": "nlkzrxj"
-    },
-    {
-      "from": "nrt1s9p",
-      "port": 1,
-      "to": "nv05s5y"
-    }
-  ],
+  "edges": [],
   "tema": {
     "nome": "Gaby Soares ",
     "foto": "midias/padrao/1794348071017-2459817851344929859-2459817847897291515.jpg",
