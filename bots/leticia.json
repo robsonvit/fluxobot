@@ -9,22 +9,12 @@
       "data": {}
     },
     {
-      "id": "n1",
-      "type": "mensagem",
-      "x": 518,
-      "y": 205,
-      "data": {
-        "texto": "Oi amor, qual o seu nome?",
-        "espera": 3
-      }
-    },
-    {
       "id": "n2",
       "type": "pergunta",
-      "x": 872,
-      "y": 381,
+      "x": 550,
+      "y": 190,
       "data": {
-        "texto": "",
+        "texto": "Oi lindoo, qual o seu nome?",
         "variavel": "Nome",
         "tipo": "texto",
         "espera": 2
@@ -488,19 +478,14 @@
     {
       "id": "nq5lczi",
       "type": "espera",
-      "x": 140,
-      "y": 270,
+      "x": 300,
+      "y": 30,
       "data": {
-        "segundos": 2
+        "segundos": "5"
       }
     }
   ],
   "edges": [
-    {
-      "from": "n1",
-      "port": "out",
-      "to": "n2"
-    },
     {
       "from": "n2",
       "port": "out",
@@ -745,6 +730,16 @@
       "from": "n48",
       "port": 0,
       "to": "n17"
+    },
+    {
+      "from": "n50",
+      "port": "out",
+      "to": "nq5lczi"
+    },
+    {
+      "from": "nq5lczi",
+      "port": "out",
+      "to": "n2"
     }
   ],
   "tema": {
