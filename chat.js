@@ -117,7 +117,7 @@
      Só funciona fora do editor e quando config.registroUrl está definido. */
   function criarRegistrador(fluxo, config) {
     const url = config.registroUrl;
-    if (!url || config.semRegistro) return { inicio() {}, passo() {}, visitar() {}, atualizar() {}, fim() {} };
+    if (!url || config.semRegistro) return { inicio() {}, passo() {}, visitar() {}, escolha() {}, atualizar() {}, fim() {} };
     const sessao = (global.crypto && global.crypto.randomUUID)
       ? global.crypto.randomUUID()
       : "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
@@ -130,6 +130,7 @@
     // Cada envio sai na hora (keepalive): se o visitante fechar a página logo depois, nada se perde.
     // A planilha aceita eventos fora de ordem (cada um traz tudo que foi feito até ali).
     let ultimoPasso = "";          // último bloco que o visitante alcançou (coluna "ultimo_passo")
+    const trilha = [];             // ids dos blocos vistos, na ordem (coluna "trilha", usada na análise por bloco)
     let respostasAtuais = {};
     let concluido = false;
     let mudouDesdeEnvio = false;
@@ -138,7 +139,7 @@
       mudouDesdeEnvio = false;
       const corpo = JSON.stringify({
         evento, sessao, fluxo: fluxo.nome || "bot", data: new Date().toISOString(),
-        origem, caminho: caminho.join(" > "), respostas: { ...respostas, ultimo_passo: ultimoPasso },
+        origem, caminho: caminho.join(" > "), respostas: { ...respostas, ultimo_passo: ultimoPasso, trilha: trilha.join(">") },
       });
       // text/plain + no-cors evita bloqueio (CORS) no Google Apps Script
       fetch(url, {
@@ -152,7 +153,8 @@
     return {
       inicio: () => enviar("inicio", {}),
       passo: (texto) => { caminho.push(texto); },
-      visitar: (rotulo) => { ultimoPasso = rotulo; mudouDesdeEnvio = true; },
+      visitar: (rotulo, id) => { ultimoPasso = rotulo; trilha.push(id); mudouDesdeEnvio = true; },
+      escolha: (id, indice) => { trilha.push(id + "=" + indice); mudouDesdeEnvio = true; },
       atualizar: (respostas) => enviar("atualizar", respostas),
       fim: (respostas) => { concluido = true; enviar("fim", respostas); },
     };
@@ -561,7 +563,7 @@
       while (no && ativo() && passos++ < MAX_PASSOS) {
         const d = no.data || {};
         let porta = "out";
-        registro.visitar(rotuloDoNo(no, passos));
+        registro.visitar(rotuloDoNo(no, passos), no.id);
         const anteriorEraBotao = veioDeBotao;
         veioDeBotao = no.type === "botoes";
 
@@ -593,6 +595,7 @@
             if (!ativo()) return;
             if (d.variavel) respostas[d.variavel] = lista[i];
             registro.passo(lista[i]);
+            registro.escolha(no.id, i);
             registro.atualizar(respostas);
             porta = i;
           }

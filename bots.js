@@ -283,16 +283,50 @@
     });
   }
 
+  /* Reduz fotos pesadas antes de enviar: no máximo 1280 px no maior lado, JPEG qualidade 82.
+     Não mexe em GIF, nem em PNG com transparência, nem em arquivos já leves. */
+  const MAX_LADO_IMAGEM = 1280;
+  const QUALIDADE_JPEG = 0.82;
+  const TAMANHO_MINIMO_PARA_REDUZIR = 250 * 1024;
+
+  async function comprimirImagem(arquivo) {
+    if (!/^image\/(jpeg|png|webp)$/.test(arquivo.type) || arquivo.size < TAMANHO_MINIMO_PARA_REDUZIR) return arquivo;
+    try {
+      const bmp = await createImageBitmap(arquivo);
+      const escalaImg = Math.min(1, MAX_LADO_IMAGEM / Math.max(bmp.width, bmp.height));
+      const tela = document.createElement("canvas");
+      tela.width = Math.max(1, Math.round(bmp.width * escalaImg));
+      tela.height = Math.max(1, Math.round(bmp.height * escalaImg));
+      const c = tela.getContext("2d", { willReadFrequently: true });
+      c.drawImage(bmp, 0, 0, tela.width, tela.height);
+      if (arquivo.type === "image/png") {
+        const px = c.getImageData(0, 0, tela.width, tela.height).data;
+        for (let i = 3; i < px.length; i += 4) if (px[i] < 255) return arquivo; // tem transparência: mantém o PNG
+      }
+      const blob = await new Promise((resolve) => tela.toBlob(resolve, "image/jpeg", QUALIDADE_JPEG));
+      if (!blob || blob.size >= arquivo.size) return arquivo;
+      const nome = arquivo.name.replace(/\.[^.]+$/, "") + ".jpg";
+      return new File([blob], nome, { type: "image/jpeg" });
+    } catch (e) {
+      return arquivo; // não deu para reduzir: envia a original
+    }
+  }
+
+  const fmtKB = (b) => (b >= 1048576 ? (b / 1048576).toFixed(1).replace(".", ",") + " MB" : Math.round(b / 1024) + " KB");
+
   async function escolherEEnviar(tipo) {
-    const arquivo = await escolherArquivo(tipo);
-    if (!arquivo) return null;
-    if (!arquivo.type.startsWith(PREFIXO_TIPO[tipo] || "")) { UI.toast("Esse arquivo não é do tipo certo para este bloco.", "erro"); return null; }
-    if (arquivo.size > LIMITE_ARQUIVO_MB * 1024 * 1024) {
+    const original = await escolherArquivo(tipo);
+    if (!original) return null;
+    if (!original.type.startsWith(PREFIXO_TIPO[tipo] || "")) { UI.toast("Esse arquivo não é do tipo certo para este bloco.", "erro"); return null; }
+    if (original.size > LIMITE_ARQUIVO_MB * 1024 * 1024) {
       UI.toast(`Arquivo grande demais (máximo ${LIMITE_ARQUIVO_MB} MB). Para vídeos maiores, use um link do YouTube ou Vimeo.`, "erro");
       return null;
     }
     const token = await obterToken();
     if (!token) return null;
+
+    const arquivo = tipo === "imagem" ? await comprimirImagem(original) : original;
+    if (arquivo !== original) UI.toast(`Imagem reduzida de ${fmtKB(original.size)} para ${fmtKB(arquivo.size)}.`);
 
     const partes = arquivo.name.split(".");
     const extensao = (partes.length > 1 ? partes.pop() : "bin").toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -404,7 +438,7 @@
     abrirBot(seletor.value);
   };
 
-  window.FluxoBots = { criarBot, escolherEEnviar, salvar };
+  window.FluxoBots = { criarBot, escolherEEnviar, salvar, config: () => config, nomeDaAba, comprimirImagem };
 
   preencherSeletor([]);
   listarBots();

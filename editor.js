@@ -167,6 +167,7 @@
       observador.observe(el);
     });
     desenharLinhas();
+    if (window.FluxoAnalise) window.FluxoAnalise.aplicar(); // selos de análise nos blocos (quando ligados)
   }
 
   function centro(elemento) {
@@ -678,6 +679,7 @@
       if (opcoes && opcoes.sujo) marcarSujo(); else { $("estado").textContent = ""; $("estado").className = "estado"; }
       if ($("teste").classList.contains("aberto")) iniciarTeste(); // mantém o teste igual ao bot aberto
       if (window.FluxoTema) window.FluxoTema.recarregar();
+      if (window.FluxoAnalise) window.FluxoAnalise.recarregar();
     },
     obterTema: () => fluxo.tema || {},
     atualizarTema: (tema) => { fluxo = { ...fluxo, tema }; salvarLocal(); agendarCommit(); },
@@ -687,6 +689,19 @@
     organizar,
     ajustarVista,
     escolherArquivoParaImportar: () => $("arquivo").click(),
+    // Seleciona um bloco e leva a tela até ele (usado pela análise)
+    focarNo: (id) => {
+      const n = achar(id);
+      if (!n) return;
+      selecionados.clear();
+      selecionados.add(id);
+      atualizarSelecao();
+      canvas.scrollTo({
+        left: Math.max(0, (n.x + LARGURA_NO / 2) * escala - canvas.clientWidth / 2),
+        top: Math.max(0, (n.y + 80) * escala - canvas.clientHeight / 2),
+        behavior: "smooth",
+      });
+    },
   };
 
   /* ---------- Ligações dos botões e atalhos ---------- */

@@ -1,4 +1,4 @@
-// FluxoBot - registro automático na planilha (versão 2)
+// FluxoBot - registro automático e análises na planilha (versão 3)
 //
 // COMO INSTALAR (ou atualizar):
 //   1. Abra a sua planilha > Extensões > Apps Script.
@@ -10,12 +10,15 @@
 // O QUE ELE FAZ:
 //   - Cada bot ganha uma aba (com o nome do bot) e cada visitante vira UMA linha,
 //     mesmo que não responda nada. A linha é atualizada a cada resposta/escolha.
-//   - Colunas: data, sessao, origem, caminho (botões clicados), concluiu e uma por variável.
+//   - Colunas: data, sessao, origem, caminho (botões clicados), concluiu, atualizado,
+//     ultimo_passo, trilha (blocos vistos, usada na análise) e uma por variável.
 //   - A aba "📊 Resumo" conta os acessos e as conversas concluídas de cada bot.
+//   - O editor pede a análise por bloco (funil), por origem, por dia e de tempo.
 
-var VERSAO = 2;
+var VERSAO = 3;
 var ABA_RESUMO = "📊 Resumo";
-var COLUNAS_FIXAS = ["data", "sessao", "origem", "caminho", "concluiu"];
+var COLUNAS_FIXAS = ["data", "sessao", "origem", "caminho", "concluiu", "atualizado"];
+var FUSO = "America/Sao_Paulo";
 
 function doPost(e) {
   var d = JSON.parse(e.postData.contents);
@@ -38,7 +41,7 @@ function doPost(e) {
     } else {
       var concluiu = evento === "fim" || evento === "completo";
       gravar(aba, cabecalho, linha, d, concluiu);
-      if (!linha && evento !== "inicio") contar(d.fluxo, 2); // chegou sem "inicio": conta o acesso
+      if (!linha) contar(d.fluxo, 2); // chegou sem "inicio": conta o acesso
       if (concluiu && !jaConcluiu) contar(d.fluxo, 3);
     }
   } finally {
@@ -47,11 +50,12 @@ function doPost(e) {
   return resposta("ok");
 }
 
-// Leitura pública das estatísticas (usada pelo editor para mostrar o contador)
+// Leitura pública (usada pelo editor): só números agregados, nunca respostas de pessoas
 function doGet(e) {
-  var acao = e && e.parameter ? e.parameter.acao : "";
-  if (acao === "versao") return json({ versao: VERSAO });
-  if (acao === "estatisticas") return json({ versao: VERSAO, bots: lerResumo() });
+  var p = (e && e.parameter) || {};
+  if (p.acao === "versao") return json({ versao: VERSAO });
+  if (p.acao === "estatisticas") return json({ versao: VERSAO, bots: lerResumo() });
+  if (p.acao === "funil") return json(funil(p.bot));
   return resposta("FluxoBot ativo (versão " + VERSAO + ")");
 }
 
@@ -96,14 +100,26 @@ function lerCelula(aba, cabecalho, linha, coluna) {
 function gravar(aba, cabecalho, linha, d, concluiu) {
   var antigo = linha ? aba.getRange(linha, 1, 1, cabecalho.length).getValues()[0] : [];
   var respostas = d.respostas || {};
+  // Eventos podem chegar fora de ordem: vale sempre o que tem a trilha mais completa (a mais longa)
+  var iTrilha = cabecalho.indexOf("trilha");
+  var trilhaAntiga = linha && iTrilha > -1 ? String(antigo[iTrilha] || "") : "";
+  var trilhaNova = String(respostas.trilha || "");
+  var novoVence = trilhaNova.length >= trilhaAntiga.length;
+
   var valores = cabecalho.map(function (coluna, i) {
     var anterior = linha ? antigo[i] : "";
     if (coluna === "data") return linha ? anterior : d.data;
     if (coluna === "sessao") return d.sessao;
     if (coluna === "origem") return linha ? anterior : (d.origem || "");
-    // eventos podem chegar fora de ordem: fica sempre o caminho mais completo (o mais longo)
     if (coluna === "caminho") return d.caminho && String(d.caminho).length >= String(anterior || "").length ? d.caminho : anterior;
     if (coluna === "concluiu") return concluiu ? "sim" : (anterior || "não");
+    if (coluna === "atualizado") {
+      var antes = anterior ? paraData(anterior).getTime() : 0;
+      return antes > paraData(d.data).getTime() ? anterior : d.data; // fica sempre o horário mais recente
+    }
+    if (coluna === "trilha" || coluna === "ultimo_passo") {
+      return novoVence && respostas[coluna] !== undefined ? respostas[coluna] : anterior;
+    }
     return respostas[coluna] !== undefined ? protegerTexto(respostas[coluna]) : anterior;
   });
   if (linha) aba.getRange(linha, 1, 1, cabecalho.length).setValues([valores]);
@@ -150,6 +166,80 @@ function lerResumo() {
     bots[l[0]] = { acessos: Number(l[1]) || 0, concluidos: Number(l[2]) || 0, ultimo: l[3] ? new Date(l[3]).toISOString() : "" };
   });
   return bots;
+}
+
+/* ---------- Análise (funil por bloco, origem, dia e tempo) ---------- */
+function paraData(v) { return v instanceof Date ? v : new Date(String(v)); }
+
+function mediana(lista) {
+  if (!lista.length) return 0;
+  var o = lista.slice().sort(function (a, b) { return a - b; });
+  var m = Math.floor(o.length / 2);
+  return o.length % 2 ? o[m] : (o[m - 1] + o[m]) / 2;
+}
+
+function funil(bot) {
+  var vazio = { versao: VERSAO, ok: true, bot: bot || "", total: 0, concluidos: 0, semTrilha: 0, saiuAntesDoPrimeiro: 0,
+    reached: {}, exits: {}, opcoes: {}, origens: [], porDia: [], duracao: { mediaConclusaoSeg: 0, medianaSaidaSeg: 0 } };
+  var aba = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(nomeDaAba(bot));
+  if (!aba || aba.getLastRow() < 2) return vazio;
+
+  var cab = aba.getRange(1, 1, 1, aba.getLastColumn()).getValues()[0].map(String);
+  var linhas = aba.getRange(2, 1, aba.getLastRow() - 1, cab.length).getValues();
+  var col = function (n) { return cab.indexOf(n); };
+  var iConc = col("concluiu"), iOrig = col("origem"), iTri = col("trilha"), iAtu = col("atualizado"), iData = col("data");
+
+  var r = vazio;
+  var porOrigem = {}, porDia = {}, duracoesConc = [], duracoesSaida = [];
+
+  linhas.forEach(function (l) {
+    r.total++;
+    var conc = iConc > -1 && String(l[iConc]) === "sim";
+    if (conc) r.concluidos++;
+
+    var origem = String((iOrig > -1 && l[iOrig]) || "direto");
+    var o = porOrigem[origem] || (porOrigem[origem] = { origem: origem, total: 0, concluidos: 0 });
+    o.total++;
+    if (conc) o.concluidos++;
+
+    var dt = iData > -1 && l[iData] ? paraData(l[iData]) : null;
+    if (dt && !isNaN(dt.getTime())) {
+      var dia = Utilities.formatDate(dt, FUSO, "yyyy-MM-dd");
+      var x = porDia[dia] || (porDia[dia] = { dia: dia, total: 0, concluidos: 0 });
+      x.total++;
+      if (conc) x.concluidos++;
+      if (iAtu > -1 && l[iAtu]) {
+        var seg = (paraData(l[iAtu]).getTime() - dt.getTime()) / 1000;
+        if (seg >= 0 && seg < 6 * 3600) (conc ? duracoesConc : duracoesSaida).push(seg);
+      }
+    }
+
+    // Linhas antigas (sem "atualizado") não têm trilha: ficam fora do funil
+    if (iAtu === -1 || !l[iAtu]) { r.semTrilha++; return; }
+    var trilha = iTri > -1 ? String(l[iTri] || "") : "";
+    if (!trilha) { r.saiuAntesDoPrimeiro++; return; }
+
+    var vistos = {};
+    var ultimo = "";
+    trilha.split(">").forEach(function (t) {
+      if (!t) return;
+      if (t.indexOf("=") > -1) {
+        var p = t.split("=");
+        var m = r.opcoes[p[0]] || (r.opcoes[p[0]] = {});
+        m[p[1]] = (m[p[1]] || 0) + 1;
+        return;
+      }
+      ultimo = t;
+      if (!vistos[t]) { vistos[t] = 1; r.reached[t] = (r.reached[t] || 0) + 1; }
+    });
+    if (!conc && ultimo) r.exits[ultimo] = (r.exits[ultimo] || 0) + 1;
+  });
+
+  r.origens = Object.keys(porOrigem).map(function (k) { return porOrigem[k]; }).sort(function (a, b) { return b.total - a.total; });
+  r.porDia = Object.keys(porDia).sort().slice(-14).map(function (k) { return porDia[k]; });
+  r.duracao.mediaConclusaoSeg = duracoesConc.length ? Math.round(duracoesConc.reduce(function (a, b) { return a + b; }, 0) / duracoesConc.length) : 0;
+  r.duracao.medianaSaidaSeg = Math.round(mediana(duracoesSaida));
+  return r;
 }
 
 /* ---------- Respostas ---------- */

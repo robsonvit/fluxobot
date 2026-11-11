@@ -61,3 +61,20 @@ perguntas, imagem, áudio, vídeo, links e a aparência (inclusive a barra de co
 ## Publicar (GitHub Pages)
 Repositório **público** > Settings > Pages > Source: **GitHub Actions**. O arquivo `.github/workflows/pages.yml`
 publica o site a cada alteração.
+
+## 📊 Análise (onde as pessoas saem)
+
+Botão **Análise** no editor (precisa do script da planilha na **versão 3**: cole o `apps-script.gs` e implante uma nova versão).
+
+- **Resumo:** acessos, % que concluiu, tempo médio até concluir, % que sai sem ver nada.
+- **Selos em cada bloco** do fluxo: `% chegaram · % saíram aqui` (verde, laranja ou vermelho).
+- **Onde mais saem**, **funil bloco a bloco** (clique para ir ao bloco), **botões mais clicados**,
+  **origem** (use `?utm_source=instagram` no link) e **acessos por dia**.
+- **O que melhorar:** sugestões automáticas (esperas longas, perguntas digitadas, mídias pesadas, oferta tardia, botões sem ligação).
+- Os números por bloco começam a contar a partir do momento em que o chat com a trilha entra no ar.
+  Na planilha, as colunas `trilha` e `ultimo_passo` guardam o caminho de cada pessoa.
+
+## Imagens leves
+Ao enviar uma imagem pelo editor (📎), fotos grandes são reduzidas sozinhas (até 1280 px, JPEG): em geral de
+1 a 4 MB para ~200 KB. PNG com transparência, GIF e arquivos leves não são alterados.
+Se você hospedar a imagem em outro site e colar o link, o tamanho continua o mesmo do arquivo original.
