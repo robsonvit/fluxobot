@@ -11,47 +11,50 @@
     {
       "id": "n2",
       "type": "pergunta",
-      "x": 550,
-      "y": 190,
+      "x": 320,
+      "y": 160,
       "data": {
         "texto": "Oi lindoo, qual o seu nome?",
         "variavel": "Nome",
         "tipo": "texto",
-        "espera": 2
+        "espera": "8"
       }
     },
     {
       "id": "n3",
       "type": "mensagem",
-      "x": 2625,
-      "y": 1134,
+      "x": 2510,
+      "y": 1000,
       "data": {
-        "texto": "Eu já sei pra que veio, então nem vou ficar de enrolação com você... 😈"
+        "texto": "Eu já sei pra que veio, então nem vou ficar de enrolação com você... 😈",
+        "espera": "8"
       }
     },
     {
       "id": "n4",
       "type": "mensagem",
-      "x": 1931,
-      "y": 844,
+      "x": 1720,
+      "y": 650,
       "data": {
-        "texto": "Muito prazer...😊"
+        "texto": "Muito prazer...😊",
+        "espera": "3"
       }
     },
     {
       "id": "n5",
       "type": "mensagem",
-      "x": 3740,
-      "y": 2051,
+      "x": 3630,
+      "y": 1880,
       "data": {
-        "texto": "Gostou amor?"
+        "texto": "Gostou amor?",
+        "espera": "4"
       }
     },
     {
       "id": "n6",
       "type": "botoes",
-      "x": 4073,
-      "y": 2270,
+      "x": 3970,
+      "y": 2090,
       "data": {
         "texto": "",
         "variavel": "",
@@ -64,19 +67,22 @@
     {
       "id": "n7",
       "type": "imagem",
-      "x": 4457,
-      "y": 2629,
+      "x": 4400,
+      "y": 2520,
       "data": {
-        "url": "https://s3.fr-par.scw.cloud/typebot/public/typebots/clkulo3a40030mj0ff1acwusp/blocks/ijam3e765wzyoo0tlu1wpdq6?v=1691056859093"
+        "url": "https://s3.fr-par.scw.cloud/typebot/public/typebots/clkulo3a40030mj0ff1acwusp/blocks/ijam3e765wzyoo0tlu1wpdq6?v=1691056859093",
+        "espera": "3",
+        "visualizacaoUnica": true
       }
     },
     {
       "id": "n8",
       "type": "mensagem",
-      "x": 5069,
-      "y": 3403,
+      "x": 5040,
+      "y": 3270,
       "data": {
-        "texto": "Diz que ficou de pau duro? 😋"
+        "texto": "Diz que ficou de pau duro? 😋",
+        "espera": "4"
       }
     },
     {
@@ -100,23 +106,25 @@
       "x": 6351,
       "y": 4306,
       "data": {
-        "texto": "Quer ver uma fotinha da minha bucetinha?"
+        "texto": "Quer ver uma fotinha da minha bucetinha?",
+        "espera": "5"
       }
     },
     {
       "id": "n11",
       "type": "audio",
-      "x": 1636,
-      "y": 659,
+      "x": 1130,
+      "y": 490,
       "data": {
-        "url": "https://s3.fr-par.scw.cloud/typebot/public/typebots/clkulo3a40030mj0ff1acwusp/blocks/pj6noeh5uk7shqdbwweq83v4?v=1691042347810"
+        "url": "https://s3.fr-par.scw.cloud/typebot/public/typebots/clkulo3a40030mj0ff1acwusp/blocks/pj6noeh5uk7shqdbwweq83v4?v=1691042347810",
+        "espera": "5"
       }
     },
     {
       "id": "n12",
       "type": "espera",
-      "x": 2972,
-      "y": 1324,
+      "x": 2900,
+      "y": 1200,
       "data": {
         "segundos": 5
       }
@@ -124,10 +132,10 @@
     {
       "id": "n13",
       "type": "espera",
-      "x": 2276,
-      "y": 967,
+      "x": 2140,
+      "y": 830,
       "data": {
-        "segundos": 5
+        "segundos": "3"
       }
     },
     {
@@ -136,23 +144,23 @@
       "x": 6025,
       "y": 3995,
       "data": {
-        "segundos": 5
+        "segundos": "3"
       }
     },
     {
       "id": "n15",
       "type": "espera",
-      "x": 4764,
-      "y": 3109,
+      "x": 4760,
+      "y": 3000,
       "data": {
-        "segundos": 2
+        "segundos": "5"
       }
     },
     {
       "id": "n16",
       "type": "espera",
-      "x": 1214,
-      "y": 642,
+      "x": 740,
+      "y": 320,
       "data": {
         "segundos": 4
       }
@@ -163,24 +171,26 @@
       "x": 7210,
       "y": 4837,
       "data": {
-        "url": "https://s3.fr-par.scw.cloud/typebot/public/typebots/clkulo3a40030mj0ff1acwusp/blocks/b0gglest659ntqdace8z4yxt?v=1691057117892"
+        "url": "https://s3.fr-par.scw.cloud/typebot/public/typebots/clkulo3a40030mj0ff1acwusp/blocks/b0gglest659ntqdace8z4yxt?v=1691057117892",
+        "visualizacaoUnica": true,
+        "espera": "3"
       }
     },
     {
       "id": "n18",
       "type": "mensagem",
-      "x": 7210,
-      "y": 5057,
+      "x": 6790,
+      "y": 5100,
       "data": {
         "texto": "Ops! rsrsrs 🤭🤭",
-        "espera": 4
+        "espera": "5"
       }
     },
     {
       "id": "n19",
       "type": "mensagem",
-      "x": 7210,
-      "y": 5227,
+      "x": 6880,
+      "y": 5410,
       "data": {
         "texto": "Vamos com calma amor"
       }
@@ -188,8 +198,8 @@
     {
       "id": "n20",
       "type": "mensagem",
-      "x": 7210,
-      "y": 5397,
+      "x": 6950,
+      "y": 5750,
       "data": {
         "texto": "Não posso te mostrar tudo por aqui 🥺",
         "espera": 4
@@ -198,8 +208,8 @@
     {
       "id": "n21",
       "type": "imagem",
-      "x": 7210,
-      "y": 5567,
+      "x": 6950,
+      "y": 6060,
       "data": {
         "url": "https://i.postimg.cc/SsrvrCk4/yw9xmq77ow96kamgca0ya59w.png"
       }
@@ -207,8 +217,8 @@
     {
       "id": "n22",
       "type": "mensagem",
-      "x": 7210,
-      "y": 5787,
+      "x": 6940,
+      "y": 6650,
       "data": {
         "texto": "Você Quer ver todos os meus videos e fotos bem gostosos?"
       }
@@ -216,8 +226,8 @@
     {
       "id": "n23",
       "type": "mensagem",
-      "x": 7210,
-      "y": 5957,
+      "x": 7270,
+      "y": 6550,
       "data": {
         "texto": "Ou até mesmo uma video chamada? rs"
       }
@@ -238,17 +248,19 @@
     {
       "id": "n25",
       "type": "imagem",
-      "x": 3265,
-      "y": 1616,
+      "x": 3220,
+      "y": 1410,
       "data": {
-        "url": "https://s3.fr-par.scw.cloud/typebot/public/typebots/clkulo3a40030mj0ff1acwusp/blocks/yrk8sa59h2ghynje7l0q7gv1?v=1691056874532"
+        "url": "https://s3.fr-par.scw.cloud/typebot/public/typebots/clkulo3a40030mj0ff1acwusp/blocks/yrk8sa59h2ghynje7l0q7gv1?v=1691056874532",
+        "visualizacaoUnica": true,
+        "espera": "3"
       }
     },
     {
       "id": "n26",
       "type": "mensagem",
-      "x": 8107,
-      "y": 6422,
+      "x": 8100,
+      "y": 6180,
       "data": {
         "texto": "Que tal adquirir um dos meus pacotes fechados? é parecido com OnlyFans só que e bem mais baratinho"
       }
@@ -256,8 +268,8 @@
     {
       "id": "n27",
       "type": "audio",
-      "x": 8107,
-      "y": 6592,
+      "x": 8080,
+      "y": 6480,
       "data": {
         "url": "https://s3.fr-par.scw.cloud/typebot/public/typebots/mh3dr894xnaavnwyvkp982t2/blocks/nk3ev7ap4n1w3jswx66uztsd?v=1691058310193"
       }
@@ -275,8 +287,8 @@
     {
       "id": "n29",
       "type": "mensagem",
-      "x": 8107,
-      "y": 6982,
+      "x": 8100,
+      "y": 7120,
       "data": {
         "texto": "Se você clicar em SIM! Eu te envio outra surpresa! 🤭🎬"
       }
@@ -297,8 +309,8 @@
     {
       "id": "n31",
       "type": "mensagem",
-      "x": 8841,
-      "y": 7302,
+      "x": 8850,
+      "y": 7140,
       "data": {
         "texto": "Amor, vou te mandar meus pacotes 👇"
       }
@@ -306,8 +318,8 @@
     {
       "id": "n32",
       "type": "mensagem",
-      "x": 8841,
-      "y": 7472,
+      "x": 8840,
+      "y": 7420,
       "data": {
         "texto": "*Pack Solo*\n*🌶️ 10 Fotos safadinhas*\n*🌶️ 03 Videos deliciosos*\n*🌶️1 Conto erotico*\n *Apenas R$ 9,00*"
       }
@@ -315,8 +327,8 @@
     {
       "id": "n33",
       "type": "mensagem",
-      "x": 8841,
-      "y": 7642,
+      "x": 8850,
+      "y": 7750,
       "data": {
         "texto": "*Pack Ouro*\n*🌶️ 25 Fotos safadinhas*\n*🌶️ 8 Videos deliciosos*\n*🌶️1 Conto erotico*\n*🌶️ Close Friends no Insta*\n*Apenas R$ 29,00*"
       }
@@ -324,8 +336,8 @@
     {
       "id": "n34",
       "type": "mensagem",
-      "x": 8841,
-      "y": 7812,
+      "x": 8850,
+      "y": 8050,
       "data": {
         "texto": "Não perde mais tempo e vem gozar juntinho cmg... Qual você mais gostou amor? 😋"
       }
@@ -333,8 +345,8 @@
     {
       "id": "n35",
       "type": "botoes",
-      "x": 9413,
-      "y": 8057,
+      "x": 9310,
+      "y": 7940,
       "data": {
         "texto": "",
         "variavel": "",
@@ -347,8 +359,8 @@
     {
       "id": "n36",
       "type": "mensagem",
-      "x": 9986,
-      "y": 8288,
+      "x": 9980,
+      "y": 8180,
       "data": {
         "texto": "aaah, e não precisa se preocupar!"
       }
@@ -365,8 +377,8 @@
     {
       "id": "n38",
       "type": "mensagem",
-      "x": 9986,
-      "y": 8628,
+      "x": 9980,
+      "y": 8720,
       "data": {
         "texto": "Pra ser mais seguro e discreto 😊"
       }
@@ -374,8 +386,8 @@
     {
       "id": "n39",
       "type": "mensagem",
-      "x": 9986,
-      "y": 8798,
+      "x": 9990,
+      "y": 8970,
       "data": {
         "texto": "o acesso chega pra você no mesmo segundo por e-mail!"
       }
@@ -383,8 +395,8 @@
     {
       "id": "n40",
       "type": "mensagem",
-      "x": 9511,
-      "y": 8492,
+      "x": 9530,
+      "y": 8400,
       "data": {
         "texto": "aaah, e não precisa se preocupar!"
       }
@@ -392,8 +404,8 @@
     {
       "id": "n41",
       "type": "mensagem",
-      "x": 9511,
-      "y": 8662,
+      "x": 9540,
+      "y": 8650,
       "data": {
         "texto": "No comprovante do pix ou cartão fica escrito \"Suco Detóx\""
       }
@@ -410,8 +422,8 @@
     {
       "id": "n43",
       "type": "mensagem",
-      "x": 9511,
-      "y": 9002,
+      "x": 9510,
+      "y": 9140,
       "data": {
         "texto": "o acesso chega pra você no mesmo segundo por e-mail!"
       }
@@ -419,8 +431,8 @@
     {
       "id": "n44",
       "type": "botoes",
-      "x": 10239,
-      "y": 8889,
+      "x": 10390,
+      "y": 8890,
       "data": {
         "texto": "",
         "variavel": "",
@@ -432,8 +444,8 @@
     {
       "id": "n45",
       "type": "botoes",
-      "x": 9760,
-      "y": 9092,
+      "x": 9740,
+      "y": 9470,
       "data": {
         "texto": "",
         "variavel": "",
@@ -476,12 +488,12 @@
       }
     },
     {
-      "id": "nq5lczi",
+      "id": "nnc96vo",
       "type": "espera",
-      "x": 300,
-      "y": 30,
+      "x": 1430,
+      "y": 490,
       "data": {
-        "segundos": "5"
+        "segundos": 4
       }
     }
   ],
@@ -545,11 +557,6 @@
       "from": "n10",
       "port": "out",
       "to": "n48"
-    },
-    {
-      "from": "n11",
-      "port": "out",
-      "to": "n4"
     },
     {
       "from": "n12",
@@ -734,12 +741,17 @@
     {
       "from": "n50",
       "port": "out",
-      "to": "nq5lczi"
+      "to": "n2"
     },
     {
-      "from": "nq5lczi",
+      "from": "n11",
       "port": "out",
-      "to": "n2"
+      "to": "nnc96vo"
+    },
+    {
+      "from": "nnc96vo",
+      "port": "out",
+      "to": "n4"
     }
   ],
   "tema": {
