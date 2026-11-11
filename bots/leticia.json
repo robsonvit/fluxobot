@@ -1,0 +1,763 @@
+{
+  "nome": "leticia",
+  "nodes": [
+    {
+      "id": "n50",
+      "type": "inicio",
+      "x": 10,
+      "y": 0,
+      "data": {}
+    },
+    {
+      "id": "n1",
+      "type": "mensagem",
+      "x": 518,
+      "y": 205,
+      "data": {
+        "texto": "Oi amor, qual o seu nome?",
+        "espera": 3
+      }
+    },
+    {
+      "id": "n2",
+      "type": "pergunta",
+      "x": 872,
+      "y": 381,
+      "data": {
+        "texto": "",
+        "variavel": "Nome",
+        "tipo": "texto",
+        "espera": 2
+      }
+    },
+    {
+      "id": "n3",
+      "type": "mensagem",
+      "x": 2625,
+      "y": 1134,
+      "data": {
+        "texto": "Eu já sei pra que veio, então nem vou ficar de enrolação com você... 😈"
+      }
+    },
+    {
+      "id": "n4",
+      "type": "mensagem",
+      "x": 1931,
+      "y": 844,
+      "data": {
+        "texto": "Muito prazer...😊"
+      }
+    },
+    {
+      "id": "n5",
+      "type": "mensagem",
+      "x": 3740,
+      "y": 2051,
+      "data": {
+        "texto": "Gostou amor?"
+      }
+    },
+    {
+      "id": "n6",
+      "type": "botoes",
+      "x": 4073,
+      "y": 2270,
+      "data": {
+        "texto": "",
+        "variavel": "",
+        "opcoes": [
+          "Amei",
+          "Quero mais"
+        ]
+      }
+    },
+    {
+      "id": "n7",
+      "type": "imagem",
+      "x": 4457,
+      "y": 2629,
+      "data": {
+        "url": "https://s3.fr-par.scw.cloud/typebot/public/typebots/clkulo3a40030mj0ff1acwusp/blocks/ijam3e765wzyoo0tlu1wpdq6?v=1691056859093"
+      }
+    },
+    {
+      "id": "n8",
+      "type": "mensagem",
+      "x": 5069,
+      "y": 3403,
+      "data": {
+        "texto": "Diz que ficou de pau duro? 😋"
+      }
+    },
+    {
+      "id": "n9",
+      "type": "botoes",
+      "x": 5486,
+      "y": 3587,
+      "data": {
+        "texto": "",
+        "variavel": "",
+        "opcoes": [
+          "Fiquei",
+          "to quase",
+          "Ainda Não"
+        ]
+      }
+    },
+    {
+      "id": "n10",
+      "type": "mensagem",
+      "x": 6351,
+      "y": 4306,
+      "data": {
+        "texto": "Quer ver uma fotinha da minha bucetinha?"
+      }
+    },
+    {
+      "id": "n11",
+      "type": "audio",
+      "x": 1636,
+      "y": 659,
+      "data": {
+        "url": "https://s3.fr-par.scw.cloud/typebot/public/typebots/clkulo3a40030mj0ff1acwusp/blocks/pj6noeh5uk7shqdbwweq83v4?v=1691042347810"
+      }
+    },
+    {
+      "id": "n12",
+      "type": "espera",
+      "x": 2972,
+      "y": 1324,
+      "data": {
+        "segundos": 5
+      }
+    },
+    {
+      "id": "n13",
+      "type": "espera",
+      "x": 2276,
+      "y": 967,
+      "data": {
+        "segundos": 5
+      }
+    },
+    {
+      "id": "n14",
+      "type": "espera",
+      "x": 6025,
+      "y": 3995,
+      "data": {
+        "segundos": 5
+      }
+    },
+    {
+      "id": "n15",
+      "type": "espera",
+      "x": 4764,
+      "y": 3109,
+      "data": {
+        "segundos": 2
+      }
+    },
+    {
+      "id": "n16",
+      "type": "espera",
+      "x": 1214,
+      "y": 642,
+      "data": {
+        "segundos": 4
+      }
+    },
+    {
+      "id": "n17",
+      "type": "imagem",
+      "x": 7210,
+      "y": 4837,
+      "data": {
+        "url": "https://s3.fr-par.scw.cloud/typebot/public/typebots/clkulo3a40030mj0ff1acwusp/blocks/b0gglest659ntqdace8z4yxt?v=1691057117892"
+      }
+    },
+    {
+      "id": "n18",
+      "type": "mensagem",
+      "x": 7210,
+      "y": 5057,
+      "data": {
+        "texto": "Ops! rsrsrs 🤭🤭",
+        "espera": 4
+      }
+    },
+    {
+      "id": "n19",
+      "type": "mensagem",
+      "x": 7210,
+      "y": 5227,
+      "data": {
+        "texto": "Vamos com calma amor"
+      }
+    },
+    {
+      "id": "n20",
+      "type": "mensagem",
+      "x": 7210,
+      "y": 5397,
+      "data": {
+        "texto": "Não posso te mostrar tudo por aqui 🥺",
+        "espera": 4
+      }
+    },
+    {
+      "id": "n21",
+      "type": "imagem",
+      "x": 7210,
+      "y": 5567,
+      "data": {
+        "url": "https://i.postimg.cc/SsrvrCk4/yw9xmq77ow96kamgca0ya59w.png"
+      }
+    },
+    {
+      "id": "n22",
+      "type": "mensagem",
+      "x": 7210,
+      "y": 5787,
+      "data": {
+        "texto": "Você Quer ver todos os meus videos e fotos bem gostosos?"
+      }
+    },
+    {
+      "id": "n23",
+      "type": "mensagem",
+      "x": 7210,
+      "y": 5957,
+      "data": {
+        "texto": "Ou até mesmo uma video chamada? rs"
+      }
+    },
+    {
+      "id": "n24",
+      "type": "botoes",
+      "x": 7681,
+      "y": 6087,
+      "data": {
+        "texto": "",
+        "variavel": "",
+        "opcoes": [
+          "Quero 🔥"
+        ]
+      }
+    },
+    {
+      "id": "n25",
+      "type": "imagem",
+      "x": 3265,
+      "y": 1616,
+      "data": {
+        "url": "https://s3.fr-par.scw.cloud/typebot/public/typebots/clkulo3a40030mj0ff1acwusp/blocks/yrk8sa59h2ghynje7l0q7gv1?v=1691056874532"
+      }
+    },
+    {
+      "id": "n26",
+      "type": "mensagem",
+      "x": 8107,
+      "y": 6422,
+      "data": {
+        "texto": "Que tal adquirir um dos meus pacotes fechados? é parecido com OnlyFans só que e bem mais baratinho"
+      }
+    },
+    {
+      "id": "n27",
+      "type": "audio",
+      "x": 8107,
+      "y": 6592,
+      "data": {
+        "url": "https://s3.fr-par.scw.cloud/typebot/public/typebots/mh3dr894xnaavnwyvkp982t2/blocks/nk3ev7ap4n1w3jswx66uztsd?v=1691058310193"
+      }
+    },
+    {
+      "id": "n28",
+      "type": "mensagem",
+      "x": 8107,
+      "y": 6812,
+      "data": {
+        "texto": "Assim você me ajuda a pagar minha faculdade e eu te ajudo a relaxar bem gostoso rsrs",
+        "espera": 12
+      }
+    },
+    {
+      "id": "n29",
+      "type": "mensagem",
+      "x": 8107,
+      "y": 6982,
+      "data": {
+        "texto": "Se você clicar em SIM! Eu te envio outra surpresa! 🤭🎬"
+      }
+    },
+    {
+      "id": "n30",
+      "type": "botoes",
+      "x": 8521,
+      "y": 7040,
+      "data": {
+        "texto": "",
+        "variavel": "",
+        "opcoes": [
+          "Sim"
+        ]
+      }
+    },
+    {
+      "id": "n31",
+      "type": "mensagem",
+      "x": 8841,
+      "y": 7302,
+      "data": {
+        "texto": "Amor, vou te mandar meus pacotes 👇"
+      }
+    },
+    {
+      "id": "n32",
+      "type": "mensagem",
+      "x": 8841,
+      "y": 7472,
+      "data": {
+        "texto": "*Pack Solo*\n*🌶️ 10 Fotos safadinhas*\n*🌶️ 03 Videos deliciosos*\n*🌶️1 Conto erotico*\n *Apenas R$ 9,00*"
+      }
+    },
+    {
+      "id": "n33",
+      "type": "mensagem",
+      "x": 8841,
+      "y": 7642,
+      "data": {
+        "texto": "*Pack Ouro*\n*🌶️ 25 Fotos safadinhas*\n*🌶️ 8 Videos deliciosos*\n*🌶️1 Conto erotico*\n*🌶️ Close Friends no Insta*\n*Apenas R$ 29,00*"
+      }
+    },
+    {
+      "id": "n34",
+      "type": "mensagem",
+      "x": 8841,
+      "y": 7812,
+      "data": {
+        "texto": "Não perde mais tempo e vem gozar juntinho cmg... Qual você mais gostou amor? 😋"
+      }
+    },
+    {
+      "id": "n35",
+      "type": "botoes",
+      "x": 9413,
+      "y": 8057,
+      "data": {
+        "texto": "",
+        "variavel": "",
+        "opcoes": [
+          "Pacote Solo",
+          "Pacote Ouro"
+        ]
+      }
+    },
+    {
+      "id": "n36",
+      "type": "mensagem",
+      "x": 9986,
+      "y": 8288,
+      "data": {
+        "texto": "aaah, e não precisa se preocupar!"
+      }
+    },
+    {
+      "id": "n37",
+      "type": "mensagem",
+      "x": 9986,
+      "y": 8458,
+      "data": {
+        "texto": "No comprovante do pix ou cartão fica escrito \"Suco Detóx\""
+      }
+    },
+    {
+      "id": "n38",
+      "type": "mensagem",
+      "x": 9986,
+      "y": 8628,
+      "data": {
+        "texto": "Pra ser mais seguro e discreto 😊"
+      }
+    },
+    {
+      "id": "n39",
+      "type": "mensagem",
+      "x": 9986,
+      "y": 8798,
+      "data": {
+        "texto": "o acesso chega pra você no mesmo segundo por e-mail!"
+      }
+    },
+    {
+      "id": "n40",
+      "type": "mensagem",
+      "x": 9511,
+      "y": 8492,
+      "data": {
+        "texto": "aaah, e não precisa se preocupar!"
+      }
+    },
+    {
+      "id": "n41",
+      "type": "mensagem",
+      "x": 9511,
+      "y": 8662,
+      "data": {
+        "texto": "No comprovante do pix ou cartão fica escrito \"Suco Detóx\""
+      }
+    },
+    {
+      "id": "n42",
+      "type": "mensagem",
+      "x": 9511,
+      "y": 8832,
+      "data": {
+        "texto": "Pra ser mais seguro e discreto 😊"
+      }
+    },
+    {
+      "id": "n43",
+      "type": "mensagem",
+      "x": 9511,
+      "y": 9002,
+      "data": {
+        "texto": "o acesso chega pra você no mesmo segundo por e-mail!"
+      }
+    },
+    {
+      "id": "n44",
+      "type": "botoes",
+      "x": 10239,
+      "y": 8889,
+      "data": {
+        "texto": "",
+        "variavel": "",
+        "opcoes": [
+          "Acessar"
+        ]
+      }
+    },
+    {
+      "id": "n45",
+      "type": "botoes",
+      "x": 9760,
+      "y": 9092,
+      "data": {
+        "texto": "",
+        "variavel": "",
+        "opcoes": [
+          "Acessar"
+        ]
+      }
+    },
+    {
+      "id": "n46",
+      "type": "redirecionar",
+      "x": 10691,
+      "y": 9232,
+      "data": {
+        "url": "https://pepper.com.br/checkout/index.html?p=62000&o=67213{{acessou checkout}}{{acessou checkout}}",
+        "novaAba": true
+      }
+    },
+    {
+      "id": "n47",
+      "type": "redirecionar",
+      "x": 10093,
+      "y": 9431,
+      "data": {
+        "url": "https://pepper.com.br/checkout/index.html?p=62205&o=67452",
+        "novaAba": false
+      }
+    },
+    {
+      "id": "n48",
+      "type": "botoes",
+      "x": 6761,
+      "y": 4565,
+      "data": {
+        "texto": "",
+        "variavel": "",
+        "opcoes": [
+          "Sim"
+        ]
+      }
+    },
+    {
+      "id": "nq5lczi",
+      "type": "espera",
+      "x": 140,
+      "y": 270,
+      "data": {
+        "segundos": 2
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "n1",
+      "port": "out",
+      "to": "n2"
+    },
+    {
+      "from": "n2",
+      "port": "out",
+      "to": "n16"
+    },
+    {
+      "from": "n3",
+      "port": "out",
+      "to": "n12"
+    },
+    {
+      "from": "n4",
+      "port": "out",
+      "to": "n13"
+    },
+    {
+      "from": "n5",
+      "port": "out",
+      "to": "n6"
+    },
+    {
+      "from": "n6",
+      "port": 0,
+      "to": "n7"
+    },
+    {
+      "from": "n6",
+      "port": 1,
+      "to": "n7"
+    },
+    {
+      "from": "n7",
+      "port": "out",
+      "to": "n15"
+    },
+    {
+      "from": "n8",
+      "port": "out",
+      "to": "n9"
+    },
+    {
+      "from": "n9",
+      "port": 0,
+      "to": "n14"
+    },
+    {
+      "from": "n9",
+      "port": 1,
+      "to": "n14"
+    },
+    {
+      "from": "n9",
+      "port": 2,
+      "to": "n14"
+    },
+    {
+      "from": "n10",
+      "port": "out",
+      "to": "n48"
+    },
+    {
+      "from": "n11",
+      "port": "out",
+      "to": "n4"
+    },
+    {
+      "from": "n12",
+      "port": "out",
+      "to": "n25"
+    },
+    {
+      "from": "n13",
+      "port": "out",
+      "to": "n3"
+    },
+    {
+      "from": "n14",
+      "port": "out",
+      "to": "n10"
+    },
+    {
+      "from": "n15",
+      "port": "out",
+      "to": "n8"
+    },
+    {
+      "from": "n16",
+      "port": "out",
+      "to": "n11"
+    },
+    {
+      "from": "n17",
+      "port": "out",
+      "to": "n18"
+    },
+    {
+      "from": "n18",
+      "port": "out",
+      "to": "n19"
+    },
+    {
+      "from": "n19",
+      "port": "out",
+      "to": "n20"
+    },
+    {
+      "from": "n20",
+      "port": "out",
+      "to": "n21"
+    },
+    {
+      "from": "n21",
+      "port": "out",
+      "to": "n22"
+    },
+    {
+      "from": "n22",
+      "port": "out",
+      "to": "n23"
+    },
+    {
+      "from": "n23",
+      "port": "out",
+      "to": "n24"
+    },
+    {
+      "from": "n24",
+      "port": 0,
+      "to": "n26"
+    },
+    {
+      "from": "n25",
+      "port": "out",
+      "to": "n5"
+    },
+    {
+      "from": "n26",
+      "port": "out",
+      "to": "n27"
+    },
+    {
+      "from": "n27",
+      "port": "out",
+      "to": "n28"
+    },
+    {
+      "from": "n28",
+      "port": "out",
+      "to": "n29"
+    },
+    {
+      "from": "n29",
+      "port": "out",
+      "to": "n30"
+    },
+    {
+      "from": "n30",
+      "port": 0,
+      "to": "n31"
+    },
+    {
+      "from": "n31",
+      "port": "out",
+      "to": "n32"
+    },
+    {
+      "from": "n32",
+      "port": "out",
+      "to": "n33"
+    },
+    {
+      "from": "n33",
+      "port": "out",
+      "to": "n34"
+    },
+    {
+      "from": "n34",
+      "port": "out",
+      "to": "n35"
+    },
+    {
+      "from": "n35",
+      "port": 0,
+      "to": "n36"
+    },
+    {
+      "from": "n35",
+      "port": 1,
+      "to": "n40"
+    },
+    {
+      "from": "n36",
+      "port": "out",
+      "to": "n37"
+    },
+    {
+      "from": "n37",
+      "port": "out",
+      "to": "n38"
+    },
+    {
+      "from": "n38",
+      "port": "out",
+      "to": "n39"
+    },
+    {
+      "from": "n39",
+      "port": "out",
+      "to": "n44"
+    },
+    {
+      "from": "n40",
+      "port": "out",
+      "to": "n41"
+    },
+    {
+      "from": "n41",
+      "port": "out",
+      "to": "n42"
+    },
+    {
+      "from": "n42",
+      "port": "out",
+      "to": "n43"
+    },
+    {
+      "from": "n43",
+      "port": "out",
+      "to": "n45"
+    },
+    {
+      "from": "n44",
+      "port": 0,
+      "to": "n46"
+    },
+    {
+      "from": "n45",
+      "port": 0,
+      "to": "n47"
+    },
+    {
+      "from": "n48",
+      "port": 0,
+      "to": "n17"
+    }
+  ],
+  "tema": {
+    "foto": "midias/leticia/1794359339003-2459817851344929859-2459817847897291515.jpg",
+    "mostrarBarra": true,
+    "corBarra": "#005e54",
+    "corFundo": "#ece5dd",
+    "corBalaoBot": "#ffffff",
+    "corTextoBot": "#111b21",
+    "corBalaoUsuario": "#dcf8c6",
+    "corTextoUsuario": "#111b21",
+    "corBotao": "#00a884",
+    "corTextoBotao": "#ffffff",
+    "nome": "Gaby Soares 😈"
+  }
+}
