@@ -881,6 +881,11 @@
       "from": "n46",
       "port": "out",
       "to": "np99jo3"
+    },
+    {
+      "from": "n9",
+      "port": 0,
+      "to": "n10"
     }
   ],
   "tema": {

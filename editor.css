@@ -210,3 +210,6 @@ dialog.dlg::backdrop { background: rgba(15, 23, 42, .45); backdrop-filter: blur(
   #tema, #teste { position: absolute; right: 0; top: 58px; bottom: 0; z-index: 15; box-shadow: var(--sombra-3); }
   .marca-nome { display: none; }
 }
+
+/* Opção de botão sem ligação: borda tracejada laranja (a conversa pararia ali) */
+.opcao .porta.saida:not(.ligada) { border-color: #f59e0b; border-style: dashed; background: #fffbeb; }

@@ -105,12 +105,19 @@
     } catch (e) { /* sem internet: ignora */ }
   }
 
+  function rotuloDoNo(no, posicao) {
+    const d = no.data || {};
+    const base = String(d.texto || d.url || d.segundos || "").replace(/\s+/g, " ").trim();
+    const curto = ["imagem", "audio", "video"].includes(no.type) ? base.split("/").pop().split("?")[0] : base;
+    return "#" + posicao + " " + no.type + ": " + curto.slice(0, 40);
+  }
+
   /* Registro automático na planilha: cada visitante vira uma linha (mesmo que não responda nada).
      Eventos: "inicio" (conta um acesso), "atualizar" (a cada resposta/escolha) e "fim" (concluiu).
      Só funciona fora do editor e quando config.registroUrl está definido. */
   function criarRegistrador(fluxo, config) {
     const url = config.registroUrl;
-    if (!url || config.semRegistro) return { inicio() {}, passo() {}, atualizar() {}, fim() {} };
+    if (!url || config.semRegistro) return { inicio() {}, passo() {}, visitar() {}, atualizar() {}, fim() {} };
     const sessao = (global.crypto && global.crypto.randomUUID)
       ? global.crypto.randomUUID()
       : "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
@@ -122,21 +129,32 @@
     } catch (e) { /* mantém "direto" */ }
     // Cada envio sai na hora (keepalive): se o visitante fechar a página logo depois, nada se perde.
     // A planilha aceita eventos fora de ordem (cada um traz tudo que foi feito até ali).
+    let ultimoPasso = "";          // último bloco que o visitante alcançou (coluna "ultimo_passo")
+    let respostasAtuais = {};
+    let concluido = false;
+    let mudouDesdeEnvio = false;
     const enviar = (evento, respostas) => {
+      respostasAtuais = respostas;
+      mudouDesdeEnvio = false;
       const corpo = JSON.stringify({
         evento, sessao, fluxo: fluxo.nome || "bot", data: new Date().toISOString(),
-        origem, caminho: caminho.join(" > "), respostas: { ...respostas },
+        origem, caminho: caminho.join(" > "), respostas: { ...respostas, ultimo_passo: ultimoPasso },
       });
       // text/plain + no-cors evita bloqueio (CORS) no Google Apps Script
       fetch(url, {
         method: "POST", mode: "no-cors", keepalive: true, headers: { "Content-Type": "text/plain" }, body: corpo,
       }).catch(() => { /* sem internet: ignora */ });
     };
+    // Quem fecha a página no meio da conversa: avisa a planilha em que bloco parou.
+    const aoSair = () => { if (!concluido && mudouDesdeEnvio) enviar("atualizar", respostasAtuais); };
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") aoSair(); });
+    global.addEventListener("pagehide", aoSair);
     return {
       inicio: () => enviar("inicio", {}),
       passo: (texto) => { caminho.push(texto); },
+      visitar: (rotulo) => { ultimoPasso = rotulo; mudouDesdeEnvio = true; },
       atualizar: (respostas) => enviar("atualizar", respostas),
-      fim: (respostas) => enviar("fim", respostas),
+      fim: (respostas) => { concluido = true; enviar("fim", respostas); },
     };
   }
 
@@ -539,9 +557,11 @@
 
       let passos = 0;
       let veioDeBotao = false;
+      let beco = false; // terminou num botão que não leva a lugar nenhum (erro do fluxo, não é conclusão)
       while (no && ativo() && passos++ < MAX_PASSOS) {
         const d = no.data || {};
         let porta = "out";
+        registro.visitar(rotuloDoNo(no, passos));
         const anteriorEraBotao = veioDeBotao;
         veioDeBotao = no.type === "botoes";
 
@@ -592,11 +612,17 @@
         } else if (no.type === "fim") {
           break;
         }
+        const atual = no;
         no = proximoNo(fluxo, no.id, porta);
+        if (!no && atual.type === "botoes" && (atual.data.opcoes || []).length > 0) {
+          beco = true;
+          registro.passo("(botão sem ligação)");
+        }
       }
       if (ativo()) {
         entrada.innerHTML = "";
-        registro.fim(respostas);
+        if (beco) registro.atualizar(respostas); // não conta como conversa concluída
+        else registro.fim(respostas);
       }
     }
 

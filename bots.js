@@ -148,9 +148,34 @@
 
   const estaSujo = () => $("estado").classList.contains("sujo");
 
+  /* Procura pontos onde a conversa pararia sem querer (botão sem ligação, bloco sem saída) */
+  function verificarFluxo(fluxo) {
+    const problemas = [];
+    const resumo = (n) => String((n.data && (n.data.texto || n.data.url)) || n.type).replace(/\s+/g, " ").slice(0, 28);
+    fluxo.nodes.forEach((n) => {
+      if (n.type === "botoes") {
+        (n.data.opcoes || []).forEach((rotulo, i) => {
+          if (!fluxo.edges.some((e) => e.from === n.id && String(e.port) === String(i))) problemas.push(`o botão "${rotulo}" não leva a lugar nenhum`);
+        });
+      } else if (!["fim", "redirecionar", "inicio"].includes(n.type) && !fluxo.edges.some((e) => e.from === n.id)) {
+        problemas.push(`o bloco "${resumo(n)}" não tem próximo passo`);
+      }
+    });
+    return problemas;
+  }
+
   /* ---------- Salvar ---------- */
   async function salvar() {
     const botao = $("btn-salvar");
+    const problemas = verificarFluxo(window.FluxoEditor.obter());
+    if (problemas.length) {
+      const ok = await UI.confirmar({
+        titulo: "Tem ligação faltando neste bot",
+        texto: "A conversa vai parar nestes pontos: " + problemas.slice(0, 4).join("; ") + (problemas.length > 4 ? `; e mais ${problemas.length - 4}` : "") + ". Os botões sem ligação aparecem com a bolinha tracejada laranja no editor.",
+        botao: "Salvar assim mesmo",
+      });
+      if (!ok) return;
+    }
     const token = await obterToken();
     if (!token) return;
     botao.disabled = true;
