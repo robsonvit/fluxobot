@@ -401,8 +401,8 @@
     {
       "id": "n40",
       "type": "mensagem",
-      "x": 9590,
-      "y": 8380,
+      "x": 9170,
+      "y": 8470,
       "data": {
         "texto": "aaah, e não precisa se preocupar!",
         "espera": "3"
@@ -467,11 +467,11 @@
     {
       "id": "n46",
       "type": "redirecionar",
-      "x": 10691,
-      "y": 9232,
+      "x": 9960,
+      "y": 7870,
       "data": {
         "url": "https://www.conteudinhos.com.br/94d79ef7-b265-4e7f-a99f-a776ce3c1045",
-        "novaAba": true
+        "novaAba": false
       }
     },
     {
@@ -481,7 +481,7 @@
       "y": 9431,
       "data": {
         "url": "https://www.conteudinhos.com.br/94d79ef7-b265-4e7f-a99f-a776ce3c1045",
-        "novaAba": true
+        "novaAba": false
       }
     },
     {
@@ -703,16 +703,6 @@
       "to": "n35"
     },
     {
-      "from": "n35",
-      "port": 0,
-      "to": "n36"
-    },
-    {
-      "from": "n35",
-      "port": 1,
-      "to": "n40"
-    },
-    {
       "from": "n36",
       "port": "out",
       "to": "n37"
@@ -751,11 +741,6 @@
       "from": "n43",
       "port": "out",
       "to": "n45"
-    },
-    {
-      "from": "n44",
-      "port": 0,
-      "to": "n46"
     },
     {
       "from": "n45",
@@ -873,11 +858,6 @@
       "to": "n5"
     },
     {
-      "from": "n47",
-      "port": "out",
-      "to": "np99jo3"
-    },
-    {
       "from": "n46",
       "port": "out",
       "to": "np99jo3"
@@ -886,6 +866,16 @@
       "from": "n9",
       "port": 0,
       "to": "n10"
+    },
+    {
+      "from": "n35",
+      "port": 0,
+      "to": "n46"
+    },
+    {
+      "from": "n35",
+      "port": 1,
+      "to": "n46"
     }
   ],
   "tema": {
