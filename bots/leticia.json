@@ -516,16 +516,6 @@
       }
     },
     {
-      "id": "n4p1xpu",
-      "type": "audio",
-      "x": 3550,
-      "y": 1520,
-      "data": {
-        "url": "",
-        "espera": "10"
-      }
-    },
-    {
       "id": "npdmske",
       "type": "espera",
       "x": 6860,
@@ -577,6 +567,15 @@
       "y": 6940,
       "data": {
         "segundos": 2
+      }
+    },
+    {
+      "id": "nj6d8bu",
+      "type": "espera",
+      "x": 3580,
+      "y": 1590,
+      "data": {
+        "segundos": "10"
       }
     }
   ],
@@ -787,16 +786,6 @@
       "to": "n18"
     },
     {
-      "from": "n25",
-      "port": "out",
-      "to": "n4p1xpu"
-    },
-    {
-      "from": "n4p1xpu",
-      "port": "out",
-      "to": "n5"
-    },
-    {
       "from": "n9",
       "port": 2,
       "to": "n10"
@@ -865,6 +854,16 @@
       "from": "nyotgfl",
       "port": "out",
       "to": "n29"
+    },
+    {
+      "from": "n25",
+      "port": "out",
+      "to": "nj6d8bu"
+    },
+    {
+      "from": "nj6d8bu",
+      "port": "out",
+      "to": "n5"
     }
   ],
   "tema": {
