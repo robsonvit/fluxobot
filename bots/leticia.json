@@ -470,7 +470,7 @@
       "x": 10691,
       "y": 9232,
       "data": {
-        "url": "https://www.conteudinhos.com.br/4a732ccb-431c-4fa0-92f9-123b5b29bd90",
+        "url": "https://www.conteudinhos.com.br/94d79ef7-b265-4e7f-a99f-a776ce3c1045",
         "novaAba": true
       }
     },
@@ -480,7 +480,7 @@
       "x": 10093,
       "y": 9431,
       "data": {
-        "url": "https://www.conteudinhos.com.br/4a732ccb-431c-4fa0-92f9-123b5b29bd90",
+        "url": "https://www.conteudinhos.com.br/94d79ef7-b265-4e7f-a99f-a776ce3c1045",
         "novaAba": true
       }
     },
@@ -577,6 +577,13 @@
       "data": {
         "segundos": "10"
       }
+    },
+    {
+      "id": "np99jo3",
+      "type": "fim",
+      "x": 11110,
+      "y": 9670,
+      "data": {}
     }
   ],
   "edges": [
@@ -864,6 +871,16 @@
       "from": "nj6d8bu",
       "port": "out",
       "to": "n5"
+    },
+    {
+      "from": "n47",
+      "port": "out",
+      "to": "np99jo3"
+    },
+    {
+      "from": "n46",
+      "port": "out",
+      "to": "np99jo3"
     }
   ],
   "tema": {
