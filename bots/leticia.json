@@ -567,7 +567,16 @@
       "x": 8710,
       "y": 6580,
       "data": {
-        "segundos": "20"
+        "segundos": "22"
+      }
+    },
+    {
+      "id": "nyotgfl",
+      "type": "espera",
+      "x": 8300,
+      "y": 6940,
+      "data": {
+        "segundos": 2
       }
     }
   ],
@@ -656,11 +665,6 @@
       "from": "n24",
       "port": 0,
       "to": "n26"
-    },
-    {
-      "from": "n28",
-      "port": "out",
-      "to": "n29"
     },
     {
       "from": "n29",
@@ -851,6 +855,16 @@
       "from": "n202qtz",
       "port": "out",
       "to": "n28"
+    },
+    {
+      "from": "n28",
+      "port": "out",
+      "to": "nyotgfl"
+    },
+    {
+      "from": "nyotgfl",
+      "port": "out",
+      "to": "n29"
     }
   ],
   "tema": {
