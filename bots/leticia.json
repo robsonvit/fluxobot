@@ -748,7 +748,6 @@
     }
   ],
   "tema": {
-    "foto": "midias/leticia/1794359416296-2459817851344929859-2459817847897291515.jpg",
     "mostrarBarra": true,
     "corBarra": "#005e54",
     "corFundo": "#ece5dd",
@@ -758,6 +757,7 @@
     "corTextoUsuario": "#111b21",
     "corBotao": "#00a884",
     "corTextoBotao": "#ffffff",
-    "nome": "Gaby Soares 😈"
+    "nome": "Gaby Soares 😈",
+    "foto": "midias/leticia/1794359433743-2459817851344929859-2459817847897291515.jpg"
   }
 }
